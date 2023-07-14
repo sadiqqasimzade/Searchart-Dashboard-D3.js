@@ -13,7 +13,7 @@ export default function DropdownMenu({ head_title, options, setState, state }: P
             <p className="font-bold">{head_title}</p>
             <div>
                 <button onClick={() => setIsOpen(!isOpen)} className="w-full text-white bg-gray-700 focus:ring-4 focus:outline-none focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-gray-700 dark:focus:ring-blue-800" type="button">
-                    Chose
+                    {state.length > 0 ? state.join(', ').length > 40 ? state.join(', ').slice(0, 40) + '...' : state.join(', ') : 'Choose'}
                     <svg className="w-2.5 h-2.5 ml-2.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                         <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
                     </svg>
@@ -27,9 +27,9 @@ export default function DropdownMenu({ head_title, options, setState, state }: P
                                     <label className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300 w-full">{value}</label>
                                 </div>
                             </li>)}
+                            <button onClick={() => setState([])} className="absolute -bottom-5 bg-purple-500 rounded left-0 w-full">Reset</button>
                         </ul>
                     </div>
-
                 </div>
 
             </div>
