@@ -29,7 +29,7 @@ export default function Filters() {
         subsectorOptions: []
     })
     const [sector, setSector] = useState<string>('')
-    const [country, setCountry] = useState<string[]>([])
+    const [country, setCountry] = useState<string>('')
     const [year, setYear] = useState<string>('')
     const [indicator, setIndicator] = useState<string>('')
     const [subsector, setSubsector] = useState<string>('')
@@ -61,15 +61,19 @@ export default function Filters() {
             const filtered = d3.filter(csvData, data =>
                 data.Subsector === subsector &&
                 data.Year === year &&
-                data.Sector === sector &&
-                (country.length > 0 ? country.includes(data.Country) : true) &&
-                data.Indicator === indicator
+                data.Sector === sector 
+                //&& (
+                //     typeof country === "object" ?
+                //         ((country as string[]).length > 0 ? (country as string[]).includes(data.Country) : isReturnedAllCountriesForDefault) :
+                //         (country.length > 0 ? data.Country === country : isReturnedAllCountriesForDefault)
+                // )
             );
             const sorted = d3.sort(filtered, (a, b) => parseInt(a.Rank) - parseInt(b.Rank));
-            const sliced = sorted.slice(0, 20);
-            setSortedCsvData(sliced);
+            // const sliced = sorted.slice(0, 20);
+            // setSortedCsvData(sliced);
+            setSortedCsvData(sorted);
         }
-    }, [subsector, year, sector, country, indicator, csvData])
+    }, [subsector, year, sector, country, csvData])
     //#endregion
 
     //#region filtering and sorting Subsector and Indicator depending on Sector value
@@ -104,13 +108,14 @@ export default function Filters() {
         sortedCsvData ?
             <>
                 <div className="grid gap-14 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 mt-10">
-                    <DropdownMenu head_title={'Countries'} options={options.countryOptions} setState={setCountry} state={country} />
+                    <Filter head_title={'Country'} options={options.countryOptions} setState={setCountry} state={country} />
+
+                    {/* <DropdownMenu head_title={'Countries'} options={options.countryOptions} setState={setCountry} state={country} /> */}
                     <Filter head_title={'Years'} options={options.yearOptions} setState={setYear} state={year} default_disabled />
                     <Filter head_title={'Sectors'} options={options.sectorOptions} setState={setSector} state={sector} default_disabled />
                     <Filter head_title={'Subsectors'} depends_on={sector} options={options.subsectorOptions} state={subsector} setState={setSubsector} default_disabled />
-                    <Filter head_title={'Indicators'} depends_on={subsector} options={options.indicatorOptions} state={indicator} setState={setIndicator} default_disabled />
                 </div>
-                <Table sortedCsvData={sortedCsvData!} />
+                <Table sortedCsvData={sortedCsvData!} country={country} />
             </> :
             <p>Loading</p>
 
