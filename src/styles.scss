@@ -4,18 +4,24 @@
 
 
 .bar {
-    width: 100%;
     background: whitesmoke;
     position: relative;
     border-radius: 20px;
-
     &::after {
         content: '';
+        animation: bar-appear 2s ease-in-out forwards 1;
+        @keyframes bar-appear {
+            from {
+                width: 0%;
+            }
+            to {
+                width: var(--bar-width);
+            }
+        }
         position: absolute;
         left: 0;
         top: 0;
         border-radius: 20px;
-        width: var(--bar-width);
         height: 100%;
         background: yellowgreen;
         opacity: 0.6;
