@@ -1,13 +1,16 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import Filters from '../components/filters';
+import ChartGrid from 'src/components/chartGrid';
+import { Provider } from 'react-redux';
+import store from 'src/store/reducers/rootReducer';
 export function App() {
   return (
-      <div className='grid justify-items-center bg-gray-900 min-h-screen'>
-        <div className='p-5 w-10/12 text-white rounded-xl'>
-          <p className="text-center font-bold text-3xl">Country Comparison</p>
-          <Filters />
+    <Provider store={store}>
+      <div className='bg-gray-100 min-h-screen'>
+        <div className='py-3 px-10 text-black rounded-xl'>
+          <ChartGrid />
         </div>
       </div>
+    </Provider>
   );
 }
 

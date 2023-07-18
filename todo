@@ -1,0 +1,5 @@
+GET /api/sector-rank-difference/?country=Germany&year1=2019&year2=2018
+response "rank difference": 12.25
+rank_difference
+
+

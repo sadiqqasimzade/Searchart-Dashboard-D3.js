@@ -7,17 +7,21 @@
     background: whitesmoke;
     position: relative;
     border-radius: 20px;
+
     &::after {
         content: '';
         animation: bar-appear 2s ease-in-out forwards 1;
+
         @keyframes bar-appear {
             from {
                 width: 0%;
             }
+
             to {
                 width: var(--bar-width);
             }
         }
+
         position: absolute;
         left: 0;
         top: 0;
@@ -32,4 +36,16 @@
 .country-img {
     width: 40px;
     height: 25px;
+}
+
+
+
+.custom-grid-cols-4 {
+    grid-template-columns: 2fr 10fr 10fr 10fr
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+body {
+    font-family: 'Roboto', sans-serif;
 }
