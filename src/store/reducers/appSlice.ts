@@ -36,11 +36,14 @@ const appSlice = createSlice({
         changeIndicator(state, action: PayloadAction<string>) {
             state.indicator = action.payload
         },
-        changeComapreYears(state, action: PayloadAction<[string, string]>) {
-            state.compareYears = action.payload
+        changeComapreYears1(state, action: PayloadAction<string>) {
+            state.compareYears[0] = action.payload
+        },
+        changeComapreYears2(state, action: PayloadAction<string>) {
+            state.compareYears[1] = action.payload
         }
     }
 })
 
-export const { changeComapreYears, changeCountry, changeIndicator, changeSector, changeSubsector, changeYear } = appSlice.actions
+export const { changeComapreYears1,changeComapreYears2, changeCountry, changeIndicator, changeSector, changeSubsector, changeYear } = appSlice.actions
 export default appSlice.reducer

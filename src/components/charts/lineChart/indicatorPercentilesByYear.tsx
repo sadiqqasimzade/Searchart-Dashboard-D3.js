@@ -58,16 +58,14 @@ export default function IndicatorPercentilesByYear() {
             );
     }, [])
     return (
-        <ChartCard title="Index Scores By Years">
-            <div className="mt-1">
-                {/* {(!indicator && !sector && !subsector && !country) ?
+        <ChartCard title="Index sector's Indicators percentiles by years">
+            {/* {(!indicator && !sector && !subsector && !country) ?
                     <p>Please select a country,indicator, sector,subsector</p> :
                     isLoading ? <p>Loading</p> :
                         error ? <p>Error</p> :
                             data?.map(d => <p>{d.year} {d.indicator} {d.score}</p>)
                 } */}
-                <div ref={svgRef}></div>
-            </div>
+            <div ref={svgRef}></div>
         </ChartCard>
     )
 }

@@ -10,14 +10,12 @@ export default function OverallPercentile(){
 
     return(
         <ChartCard title="Overall Percentile">
-            <div className="mt-1">
                 {(!year && !country) ?
                     <p>Please select a country, year</p> :
                     isLoading ? <p>Loading</p> :
                         error ? <p>Error</p> :
                             <p>{data?.average_score}:{data?.country}</p>
                 }
-            </div>
         </ChartCard>
     )
 }

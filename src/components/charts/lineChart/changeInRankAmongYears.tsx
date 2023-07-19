@@ -59,7 +59,6 @@ export default function ChangeInRankAmongYears() {
     }, [])
     return (
         <ChartCard title="Change in Rank Among Years">
-            <div className="mt-1">
                 {/* {(!country) ?
                     <p>Please select a country</p> :
                     isLoading ? <p>Loading</p> :
@@ -67,6 +66,5 @@ export default function ChangeInRankAmongYears() {
                             data?.map(d => <p>{d.year} {d.sector} {d.year}</p>)
                 } */}
                    <div ref={svgRef}></div>
-            </div>
         </ChartCard>)
 }

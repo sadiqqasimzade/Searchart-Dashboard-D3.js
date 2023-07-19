@@ -15,7 +15,6 @@ export default function SectorsAvarangeChange() {
 
     return (
         <ChartCard title="Index Scores By Years">
-            <div className="mt-1">
                 {/* {(!years[0] && !years[1] && !country) ?
                     <p>Please select a country,years</p> :
                     isLoading ? <p>Loading</p> :
@@ -43,7 +42,6 @@ export default function SectorsAvarangeChange() {
                     <hr />
                 </>)}
 
-            </div>
         </ChartCard>
     )
 }

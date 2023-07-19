@@ -19,15 +19,12 @@ export type CountryInfo = {
 }[]
 
 // /api/subsecors
-export type UniqueSubsectors = {
-    "id": number,
-    "subsector": string,
-    "sector": number
-}
+export type UniqueSubsectors = string[]
 
 // /api/unique-country/
 export type UniqueCountries = string[]
 export type UniqueSectors = string[]
+export type UniqueIndicators = string[]
 export type UniqueYears = {
     min_year: string,
     max_year: string
@@ -53,12 +50,9 @@ export type CountryAverageScore = {
 }
 // /year-score/?country=Azerbaijan&sector=Economy
 export type YearScore = {
-    sector: string;
-    years: {
-        year: string;
-        score: number;
-    }[];
-};
+    year: string;
+    score: number;
+}[];
 
 // /api/sector-rank-difference/?country=Germany&year1=2019&year2=2018
 export type SectorRankDifference = {
@@ -66,6 +60,9 @@ export type SectorRankDifference = {
     "rank difference": number
 }[]
 
-
-
+// /api/avarange-score/?country=Azerbaijan&year=2020
+export type AvangeScore = {
+    sector:string
+    average_score: number;
+}[]
 //sectors?indicators?

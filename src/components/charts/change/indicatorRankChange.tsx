@@ -9,11 +9,10 @@ export default function IndicatorRankChange() {
     const years = useSelector(getCompareYears)
     const sector = useSelector(getSector)
     const subsector = useSelector(getSubsector)
-    // const { data, isLoading, error } = useFetchCountryIndexDifferenceQuery({ country, sector, subsector, year1: years[0], year2: years[1] })
+    // const { data, isLoading, error } = useFetchCountryIndexDifferenceQuery({ country:'Azerbaijan', sector:'Index', subsector:'Demographics', year1: '2000', year2: '2010' })
     const sorted = data.sort((a, b) => b.rank_diff - a.rank_diff)
     return (
         <ChartCard title="Indicator Rank Change">
-            <div className="mt-1">
                 {/* {(!years[0] && !years[1] && !sector && !subsector && !country) ?
                     <p>Please select a country, years, sector,subsector</p> :
                     isLoading ? <p>Loading</p> :
@@ -39,7 +38,6 @@ export default function IndicatorRankChange() {
                     </div>
                     <hr />
                 </>)}
-            </div>
         </ChartCard>
     )
 }

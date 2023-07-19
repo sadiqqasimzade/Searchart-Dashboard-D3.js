@@ -8,13 +8,25 @@ import IndicatorRankChange from './charts/change/indicatorRankChange';
 import IndicatorPercentiles from './charts/bar/indicatorPercentiles';
 import IndicatorPercentilesByYear from './charts/lineChart/indicatorPercentilesByYear';
 import Filter from './inputs/filter';
-import { useFetchUniqueCountriesQuery, useFetchUniqueSectorsQuery, useFetchUniqueSubsectorsQuery, useFetchUniqueYearsQuery } from "src/store/reducers/apiSlice";
+import { useFetchUniqueCountriesQuery, useFetchUniqueIndicatorsQuery, useFetchUniqueSectorsQuery, useFetchUniqueSubsectorsQuery, useFetchUniqueYearsQuery } from "src/store/reducers/apiSlice";
+import { useSelector } from "react-redux";
+import { getCompareYears, getCountry, getIndicator, getSector, getSubsector, getYear } from "src/store/selectors/appSelectors";
+import { changeComapreYears1, changeComapreYears2, changeCountry, changeIndicator, changeSector, changeSubsector, changeYear } from "src/store/reducers/appSlice";
 
 export default function ChartGrid() {
-    useFetchUniqueCountriesQuery()
-    useFetchUniqueSectorsQuery()
-    useFetchUniqueSubsectorsQuery()
-    useFetchUniqueYearsQuery()
+    const subsector = useSelector(getSubsector)
+    const sector = useSelector(getSector)
+    const country = useSelector(getCountry)
+    const compareYears = useSelector(getCompareYears)
+    const indicator = useSelector(getIndicator)
+    const year = useSelector(getYear)
+
+    const { data: countries, isLoading: isCountriesLoding } = useFetchUniqueCountriesQuery()
+    const { data: sectors, isLoading: isSectorsLoding } = useFetchUniqueSectorsQuery()
+    const { data: subsectors, isLoading: isSubsectorsLoding } = useFetchUniqueSubsectorsQuery({ sector })
+    const { data: years, isLoading: isYearsLoding } = useFetchUniqueYearsQuery()
+    const { data: indicators, isLoading: isIndicatorsLoding } = useFetchUniqueIndicatorsQuery({ sector, subsector })
+
     return (
         <>
             <div className='flex justify-center gap-6'>
@@ -30,18 +42,18 @@ export default function ChartGrid() {
                 </svg>
                 </button>
             </div>
-            <div className="grid grid-flow-row gap-6 custom-grid-cols-4  mt-5">
+            <div className="grid grid-flow-row gap-4 custom-grid-cols-4  mt-5">
                 <p></p>
                 <div className='flex gap-5 mx-4'>
-                    <Filter head_title='Country' options={['az', 'en', 'ru']} default_disabled />
-                    <Filter head_title='Year' options={['az', 'en', 'ru']} default_disabled />
+                    <Filter head_title='Country' state={country} options={countries} setState={changeCountry} default_disabled />
+                    <Filter head_title='Year' state={year} options={years} setState={changeYear} default_disabled />
                 </div>
                 <div className='flex gap-5 mx-4'>
-                    <Filter head_title='Sector' options={['az', 'en', 'ru']} default_disabled />
+                    <Filter head_title='Sector' options={sectors} setState={changeSector} default_disabled />
                 </div>
                 <div className='flex gap-5 mx-4'>
-                    <Filter head_title='Year' options={['az', 'en', 'ru']} default_disabled />
-                    <Filter head_title='Year' options={['az', 'en', 'ru']} default_disabled />
+                    <Filter head_title='' options={years} setState={changeComapreYears1} default_disabled />
+                    <Filter head_title='' options={years} setState={changeComapreYears2} default_disabled />
                 </div>
 
 
@@ -57,10 +69,10 @@ export default function ChartGrid() {
 
                 <p></p>
                 <div className="mx-4">
-                    <Filter head_title='Subsector' options={['az', 'en', 'ru']} default_disabled />
+                    <Filter head_title='Subsector' options={subsectors} setState={changeSubsector} default_disabled />
                 </div>
-                <div className="mx-4">
-                    <Filter head_title='Indicator' options={['az', 'en', 'ru']} default_disabled />
+                <div className="mx-4 my-2">
+                    <Filter head_title='Indicator' options={indicators} setState={changeIndicator} default_disabled />
                 </div>
                 <div></div>
 

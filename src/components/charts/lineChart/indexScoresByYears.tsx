@@ -62,7 +62,6 @@ export default function IndexScoresByYears() {
 
     return (
         <ChartCard title="Index Scores By Years">
-            <div className="mt-1">
                 {/* {(!sector && !country) ?
                     <p>Please select a country, sector</p> :
                     isLoading ? <p>Loading</p> :
@@ -71,7 +70,6 @@ export default function IndexScoresByYears() {
                             
                         } */}
                 <div ref={svgRef}></div>
-            </div>
         </ChartCard>
     )
 }
