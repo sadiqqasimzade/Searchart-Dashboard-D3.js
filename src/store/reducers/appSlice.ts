@@ -1,19 +1,19 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 type AppState = {
-    country: string | undefined
-    year: string | undefined
-    sector: string | undefined
-    subsector: string | undefined
-    indicator: string | undefined
-    compareYears: [string | undefined, string | undefined]
+    country: string | null
+    year: string | null
+    sector: string | null
+    subsector: string | null
+    indicator: string | null
+    compareYears: [string | null, string | null]
 }
 const initialState: AppState = {
-    compareYears: [undefined, undefined],
-    country: undefined,
-    indicator: undefined,
-    sector: undefined,
-    subsector: undefined,
-    year: undefined
+    compareYears: [null, null],
+    country: null,
+    indicator: null,
+    sector: null,
+    subsector: null,
+    year: null
 }
 
 
@@ -41,7 +41,7 @@ const appSlice = createSlice({
         },
         changeComapreYears2(state, action: PayloadAction<string>) {
             state.compareYears[1] = action.payload
-        }
+        },
     }
 })
 

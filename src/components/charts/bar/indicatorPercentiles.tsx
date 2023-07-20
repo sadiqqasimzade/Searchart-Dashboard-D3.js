@@ -11,9 +11,11 @@ export default function IndicatorPercentiles() {
     const year = useSelector(getYear)
     const sector = useSelector(getSector)
     const subsector = useSelector(getSubsector)
+    // const { data, isLoading, error } = useFetchCountryInfoQuery({ country, sector, subsector, year })
+
+    
     const tableRef = useRef<HTMLTableElement>(null)
 
-    // const { data, isLoading, error } = useFetchCountryInfoQuery({ country, sector, subsector, year })
 
     useEffect(() => {
         if (data) {

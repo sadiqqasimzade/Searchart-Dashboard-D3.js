@@ -13,8 +13,10 @@ export default function ChangeInRankAmongYears() {
 
 
     useEffect(() => {
+
+
         // Sort the data by year
-        const filtered=data.filter(d=>d.sector==="Army")
+        const filtered = data.filter(d => d.sector === "Army")
         const sortedData = filtered.sort((a, b) => parseInt(a.year) - parseInt(b.year));
 
         // Set the dimensions and margins of the graph
@@ -56,15 +58,36 @@ export default function ChangeInRankAmongYears() {
                 .x((d) => x(d3.timeParse("%Y")(d.year)))
                 .y((d) => y(d.score))
             );
+
+
+        const make_x_gridlines = d3.axisBottom(x)
+            .tickSize(-height)
+            .tickFormat("");
+
+        const make_y_gridlines = d3.axisLeft(y)
+            .tickSize(-(width))
+            .tickFormat("")
+
+        svg.append("g")
+            .attr('id', 'gridXLabel')
+            .attr("transform", `translate(0,${height})`)
+            .style("opacity", "0.1")
+            .call(make_x_gridlines)
+
+        svg.append("g")
+            .attr('id', 'gridYLabel')
+            .attr("transform", `translate(${0},0)`)
+            .style("opacity", "0.1")
+            .call(make_y_gridlines)
     }, [])
     return (
         <ChartCard title="Change in Rank Among Years">
-                {/* {(!country) ?
+            {/* {(!country) ?
                     <p>Please select a country</p> :
                     isLoading ? <p>Loading</p> :
                         error ? <p>Error</p> :
                             data?.map(d => <p>{d.year} {d.sector} {d.year}</p>)
                 } */}
-                   <div ref={svgRef}></div>
+            <div ref={svgRef}></div>
         </ChartCard>)
 }

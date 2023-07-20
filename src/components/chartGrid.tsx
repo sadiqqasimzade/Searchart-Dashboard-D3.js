@@ -25,7 +25,7 @@ export default function ChartGrid() {
     const { data: sectors, isLoading: isSectorsLoding } = useFetchUniqueSectorsQuery()
     const { data: subsectors, isLoading: isSubsectorsLoding } = useFetchUniqueSubsectorsQuery({ sector })
     const { data: years, isLoading: isYearsLoding } = useFetchUniqueYearsQuery()
-    const { data: indicators, isLoading: isIndicatorsLoding } = useFetchUniqueIndicatorsQuery({ sector, subsector })
+    const { data: indicators, isLoading: isIndicatorsLoding } = useFetchUniqueIndicatorsQuery({ subsector })
 
     return (
         <>
@@ -44,16 +44,16 @@ export default function ChartGrid() {
             </div>
             <div className="grid grid-flow-row gap-4 custom-grid-cols-4  mt-5">
                 <p></p>
-                <div className='flex gap-5 mx-4'>
+                <div className='flex gap-5'>
                     <Filter head_title='Country' state={country} options={countries} setState={changeCountry} default_disabled />
-                    <Filter head_title='Year' state={year} options={years} setState={changeYear} default_disabled />
+                    <Filter head_title='Year' state={year} options={years} setState={changeYear} depends_on={country} default_disabled />
                 </div>
-                <div className='flex gap-5 mx-4'>
-                    <Filter head_title='Sector' options={sectors} setState={changeSector} default_disabled />
+                <div className=''>
+                    <Filter head_title='Sector' options={sectors} setState={changeSector} depends_on={country} default_disabled />
                 </div>
-                <div className='flex gap-5 mx-4'>
-                    <Filter head_title='' options={years} setState={changeComapreYears1} default_disabled />
-                    <Filter head_title='' options={years} setState={changeComapreYears2} default_disabled />
+                <div className='flex gap-5 items-end'>
+                    <Filter head_title='' options={years} state={compareYears[0]} setState={changeComapreYears1} default_disabled />
+                    <Filter head_title='' options={years} state={compareYears[1]} setState={changeComapreYears2} default_disabled />
                 </div>
 
 
@@ -68,11 +68,11 @@ export default function ChartGrid() {
                 <SectorsAvarangeChange />
 
                 <p></p>
-                <div className="mx-4">
-                    <Filter head_title='Subsector' options={subsectors} setState={changeSubsector} default_disabled />
+                <div className="">
+                    <Filter head_title='Subsector' options={subsectors} state={subsector} setState={changeSubsector} depends_on={sector} default_disabled />
                 </div>
-                <div className="mx-4 my-2">
-                    <Filter head_title='Indicator' options={indicators} setState={changeIndicator} default_disabled />
+                <div className="">
+                    <Filter head_title='Indicator' options={indicators} state={indicator} depends_on={subsector} setState={changeIndicator} default_disabled />
                 </div>
                 <div></div>
 

@@ -56,6 +56,18 @@ export default function IndicatorPercentilesByYear() {
                 .x((d) => x(d3.timeParse("%Y")(d.year)))
                 .y((d) => y(d.score))
             );
+
+        const make_y_gridlines = d3.axisLeft(y)
+            .tickSize(-(width))
+            .tickFormat("")
+
+
+
+        svg.append("g")
+            .attr('id', 'gridYLabel')
+            .attr("transform", `translate(${0},0)`)
+            .style("opacity", "0.1")
+            .call(make_y_gridlines)
     }, [])
     return (
         <ChartCard title="Index sector's Indicators percentiles by years">

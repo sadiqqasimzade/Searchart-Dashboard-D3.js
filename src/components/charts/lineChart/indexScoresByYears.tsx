@@ -56,6 +56,25 @@ export default function IndexScoresByYears() {
                 .x((d) => x(d3.timeParse("%Y")(d.year)))
                 .y((d) => y(d.score))
             );
+            const make_x_gridlines = d3.axisBottom(x)
+            .tickSize(-height)
+            .tickFormat("");
+
+        const make_y_gridlines = d3.axisLeft(y)
+            .tickSize(-(width))
+            .tickFormat("")
+
+        svg.append("g")
+            .attr('id', 'gridXLabel')
+            .attr("transform", `translate(0,${height})`)
+            .style("opacity", "0.1")
+            .call(make_x_gridlines)
+
+        svg.append("g")
+            .attr('id', 'gridYLabel')
+            .attr("transform", `translate(${0},0)`)
+            .style("opacity", "0.1")
+            .call(make_y_gridlines)
     }, [])
 
 
