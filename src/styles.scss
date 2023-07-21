@@ -27,7 +27,7 @@
         top: 0;
         border-radius: 20px;
         height: 100%;
-        background: linear-gradient(90deg, #2e00ff, #100057);
+        background: var(--color,linear-gradient(90deg, #2e00ff, #100057));
         opacity: 0.6;
         z-index: 5;
     }
@@ -48,4 +48,36 @@
 
 body {
     font-family: 'Roboto', sans-serif;
+    
 }
+.globalbg{
+    background-image: url('https://avatars.mds.yandex.net/i?id=fc9dcd3d63d70fa4e1afcf7ce2b5c10e35e63b70-9181437-images-thumbs&n=13');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+
+}
+
+
+.progress{
+    position: relative;
+    margin: 4px;
+    float:left;
+    text-align: center;
+  }
+  .barOverflow{ /* Wraps the rotating .bar */
+    position: relative;
+    overflow: hidden; /* Comment this line to understand the trick */
+    width: 190px; height: 90px; /* Half circle (overflow) */
+    margin-bottom: -14px; /* bring the numbers up */
+  }
+  .bar-overall{
+    position: absolute;
+    top: 0; left: 0;
+    width: 190px; height: 190px; /* full circle! */
+    border-radius: 50%;
+    box-sizing: border-box;
+    border: 20px solid #eee;     /* half gray, */
+    border-bottom-color: green;  /* half azure */
+    border-right-color: green   ;
+  }

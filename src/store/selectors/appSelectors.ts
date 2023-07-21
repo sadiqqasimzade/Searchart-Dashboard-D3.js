@@ -6,3 +6,4 @@ export const getSector = (state: RootState) => state.appSlice.sector
 export const getSubsector = (state: RootState) => state.appSlice.subsector
 export const getIndicator = (state: RootState) => state.appSlice.indicator
 export const getCompareYears = (state: RootState) => state.appSlice.compareYears
+export const getFlag = (state: RootState) => state.appSlice.flag

@@ -1,23 +1,37 @@
 import { useFetchCountryAverageScoreQuery } from "src/store/reducers/apiSlice"
 import ChartCard from "../chartCard"
-import { getCountry, getYear } from "src/store/selectors/appSelectors"
+import { getCountry, getFlag, getYear } from "src/store/selectors/appSelectors"
 import { useSelector } from "react-redux"
-import { data } from "src/constants/data7";
 
-export default function OverallPercentile(){
+export default function OverallPercentile() {
     const country = useSelector(getCountry)
     const year = useSelector(getYear)
-    // const { data, isLoading, error } = useFetchCountryAverageScoreQuery({ country,year })
+    const flag = useSelector(getFlag)
+    const { data, isLoading, error } = useFetchCountryAverageScoreQuery({ country, year })
 
-    return(
+
+    return (
         <ChartCard title="Overall Percentile">
-                {/* {(!year && !country) ?
-                    <p>Please select a country, year</p> :
-                    isLoading ? <p>Loading</p> :
-                        error ? <p>Error</p> :
-                            <p>{data?.average_score}:{data?.country}</p>
-                } */}
-            <p>{data.average_score} : {data.country}</p>
+            {(!year || !country) ?
+                <p>Please select a country and year</p> :
+                isLoading ? <p>Loading</p> :
+                    error ? <p>Error</p> :
+                        data &&
+                        <div className="w-full h-full flex justify-center items-center  flex-col">
+                            <div className="flex items-center justify-between gap-5">
+                                <p>{data.country}</p>
+                                <img src={flag} className="h-5 w-8" alt="country flag" />
+                            </div>
+                            <div className="progress">
+                                <div className="barOverflow">
+                                    <div className="bar-overall transition-all" style={{ transform: `rotate(${45 + data.average_score * 1.8}deg)`}}></div>
+                                </div>
+                                <span className="font-semibold text-lg">{data.average_score}</span>%
+                            </div>
+
+                        </div>
+            }
+
 
         </ChartCard>
     )

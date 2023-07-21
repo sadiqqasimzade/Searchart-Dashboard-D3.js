@@ -6,6 +6,7 @@ type AppState = {
     subsector: string | null
     indicator: string | null
     compareYears: [string | null, string | null]
+    flag: string | null
 }
 const initialState: AppState = {
     compareYears: [null, null],
@@ -13,7 +14,8 @@ const initialState: AppState = {
     indicator: null,
     sector: null,
     subsector: null,
-    year: null
+    year: null,
+    flag: null
 }
 
 
@@ -29,9 +31,12 @@ const appSlice = createSlice({
         },
         changeSector(state, action: PayloadAction<string>) {
             state.sector = action.payload
+            state.subsector = null
+            state.indicator = null
         },
         changeSubsector(state, action: PayloadAction<string>) {
             state.subsector = action.payload
+            state.indicator = null
         },
         changeIndicator(state, action: PayloadAction<string>) {
             state.indicator = action.payload
@@ -42,8 +47,11 @@ const appSlice = createSlice({
         changeComapreYears2(state, action: PayloadAction<string>) {
             state.compareYears[1] = action.payload
         },
+        changeFlag(state, action: PayloadAction<string>) {
+            state.flag = action.payload
+        }
     }
 })
 
-export const { changeComapreYears1,changeComapreYears2, changeCountry, changeIndicator, changeSector, changeSubsector, changeYear } = appSlice.actions
+export const { changeFlag,changeComapreYears1, changeComapreYears2, changeCountry, changeIndicator, changeSector, changeSubsector, changeYear } = appSlice.actions
 export default appSlice.reducer

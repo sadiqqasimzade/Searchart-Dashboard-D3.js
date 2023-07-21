@@ -6,7 +6,6 @@ export type CountryRankDifference = {
 
 // /api/country-diagram/?country=Azerbaijan&sector=Economy&subsector=GDP%20and%20economic%20growth&indicator=GDP%20per%20capita%20Purchasing%20Power%20Parity
 export type CountryDiagram = {
-    "indicator": string,
     "year": string,
     "score": number
 }[]
@@ -39,8 +38,7 @@ export type CountryScoreDifference = {
 // /api/country-score-year/?country=Azerbaijan
 export type CountryScoreYear = {
     "year": string,
-    "sector": string,
-    "score": number
+    "avarage_score": number
 }[]
 
 // /sector-average-score/?country=Azerbaijan&year=2020
@@ -57,7 +55,7 @@ export type YearScore = {
 // /api/sector-rank-difference/?country=Germany&year1=2019&year2=2018
 export type SectorRankDifference = {
     "sector": string,
-    "rank difference": number
+    "rank_difference": number
 }[]
 
 // /api/avarange-score/?country=Azerbaijan&year=2020

@@ -9,11 +9,14 @@ import IndicatorPercentiles from './charts/bar/indicatorPercentiles';
 import IndicatorPercentilesByYear from './charts/lineChart/indicatorPercentilesByYear';
 import Filter from './inputs/filter';
 import { useFetchUniqueCountriesQuery, useFetchUniqueIndicatorsQuery, useFetchUniqueSectorsQuery, useFetchUniqueSubsectorsQuery, useFetchUniqueYearsQuery } from "src/store/reducers/apiSlice";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getCompareYears, getCountry, getIndicator, getSector, getSubsector, getYear } from "src/store/selectors/appSelectors";
-import { changeComapreYears1, changeComapreYears2, changeCountry, changeIndicator, changeSector, changeSubsector, changeYear } from "src/store/reducers/appSlice";
+import { changeComapreYears1, changeComapreYears2, changeCountry, changeFlag, changeIndicator, changeSector, changeSubsector, changeYear } from "src/store/reducers/appSlice";
+import { useEffect } from "react";
 
 export default function ChartGrid() {
+    const dispatch = useDispatch()
+
     const subsector = useSelector(getSubsector)
     const sector = useSelector(getSector)
     const country = useSelector(getCountry)
@@ -21,11 +24,20 @@ export default function ChartGrid() {
     const indicator = useSelector(getIndicator)
     const year = useSelector(getYear)
 
-    const { data: countries, isLoading: isCountriesLoding } = useFetchUniqueCountriesQuery()
-    const { data: sectors, isLoading: isSectorsLoding } = useFetchUniqueSectorsQuery()
-    const { data: subsectors, isLoading: isSubsectorsLoding } = useFetchUniqueSubsectorsQuery({ sector })
-    const { data: years, isLoading: isYearsLoding } = useFetchUniqueYearsQuery()
-    const { data: indicators, isLoading: isIndicatorsLoding } = useFetchUniqueIndicatorsQuery({ subsector })
+    const { data: countries } = useFetchUniqueCountriesQuery()
+    const { data: sectors } = useFetchUniqueSectorsQuery()
+    const { data: subsectors } = useFetchUniqueSubsectorsQuery({ sector })
+    const { data: years } = useFetchUniqueYearsQuery()
+    const { data: indicators } = useFetchUniqueIndicatorsQuery({ subsector })
+    useEffect(() => {
+        if (country) {
+            fetch(`https://restcountries.com/v3.1/name/${country}`).then(res => res.json()).then((d) => {
+                dispatch(changeFlag(d[0].flags.svg))
+            }).catch(() => {
+                dispatch(changeFlag('404notfound.png'))
+            })
+        }
+    }, [country])
 
     return (
         <>
@@ -49,7 +61,7 @@ export default function ChartGrid() {
                     <Filter head_title='Year' state={year} options={years} setState={changeYear} depends_on={country} default_disabled />
                 </div>
                 <div className=''>
-                    <Filter head_title='Sector' options={sectors} setState={changeSector} depends_on={country} default_disabled />
+                    <Filter head_title='Sector' state={sector} options={sectors} setState={changeSector} depends_on={country} default_disabled />
                 </div>
                 <div className='flex gap-5 items-end'>
                     <Filter head_title='' options={years} state={compareYears[0]} setState={changeComapreYears1} default_disabled />
@@ -57,12 +69,12 @@ export default function ChartGrid() {
                 </div>
 
 
-                <p className=" grid place-content-center -rotate-90 h-full text-center text-sm writing-mode-vertical-rl">Overall Score Analysis</p>
+                <p className=" grid place-content-center -rotate-90 h-full text-center text-md writing-mode-vertical-rl font-bold text-green-700">Overall Score Analysis</p>
                 <OverallPercentile />
                 <ChangeInRankAmongYears />
                 <OverallScoreChange />
 
-                <p className="grid place-content-center -rotate-90 h-full text-center text-sm writing-mode-vertical-rl">Sector Analysis</p>
+                <p className="grid place-content-center -rotate-90 h-full text-center text-md writing-mode-vertical-rl font-bold text-red-700">Sector Analysis</p>
                 <AvarangePercentilesByCategories />
                 <IndexScoresByYears />
                 <SectorsAvarangeChange />
@@ -76,7 +88,7 @@ export default function ChartGrid() {
                 </div>
                 <div></div>
 
-                <p className="grid place-content-center -rotate-90 h-full  text-center text-sm">Indicator Analysis</p>
+                <p className="grid place-content-center -rotate-90 h-full  text-center text-md font-bold text-purple-900">Indicator Analysis</p>
                 <IndicatorPercentiles />
                 <IndicatorPercentilesByYear />
                 <IndicatorRankChange />
