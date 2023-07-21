@@ -2,16 +2,17 @@ import { useFetchCountryAverageScoreQuery } from "src/store/reducers/apiSlice"
 import ChartCard from "../chartCard"
 import { getCountry, getFlag, getYear } from "src/store/selectors/appSelectors"
 import { useSelector } from "react-redux"
-
-export default function OverallPercentile() {
+type Props = {
+    text_color: string
+}
+export default function OverallPercentile({ text_color }: Props) {
     const country = useSelector(getCountry)
     const year = useSelector(getYear)
     const flag = useSelector(getFlag)
     const { data, isLoading, error } = useFetchCountryAverageScoreQuery({ country, year })
 
-
     return (
-        <ChartCard title="Overall Percentile">
+        <ChartCard title="Overall Percentile" text_color={text_color}>
             {(!year || !country) ?
                 <p>Please select a country and year</p> :
                 isLoading ? <p>Loading</p> :
@@ -24,7 +25,11 @@ export default function OverallPercentile() {
                             </div>
                             <div className="progress">
                                 <div className="barOverflow">
-                                    <div className="bar-overall transition-all" style={{ transform: `rotate(${45 + data.average_score * 1.8}deg)`}}></div>
+                                    <div className="bar-overall transition-all" style={{
+                                        transform: `rotate(${45 + data.average_score * 1.8}deg)`,
+                                        borderBottomColor: `hsl(${data.average_score}, 100%, 40%)`,
+                                        borderRightColor: `hsl(${data.average_score}, 100%, 40%)`,
+                                    }}></div>
                                 </div>
                                 <span className="font-semibold text-lg">{data.average_score}</span>%
                             </div>
@@ -33,6 +38,6 @@ export default function OverallPercentile() {
             }
 
 
-        </ChartCard>
+        </ChartCard >
     )
 }

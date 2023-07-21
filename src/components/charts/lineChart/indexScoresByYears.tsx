@@ -4,7 +4,11 @@ import ChartCard from "../chartCard";
 import { useSelector } from "react-redux";
 import { getCountry, getSector } from "src/store/selectors/appSelectors";
 import { useEffect, useRef } from "react";
-export default function IndexScoresByYears() {
+
+type Props = {
+    text_color: string
+}
+export default function IndexScoresByYears({ text_color }: Props) {
 
     // set the dimensions and margins of the graph
 
@@ -19,7 +23,7 @@ export default function IndexScoresByYears() {
             const margin = { top: 10, right: 30, bottom: 30, left: 60 },
                 width = 460 - margin.left - margin.right,
                 height = 200 - margin.top - margin.bottom;
-                d3.select(svgRef.current).selectAll("*").remove()
+            d3.select(svgRef.current).selectAll("*").remove()
 
             const svg = d3
                 .select(svgRef.current)
@@ -33,17 +37,20 @@ export default function IndexScoresByYears() {
                 .scaleTime()
                 .domain(d3.extent(data, (d) => d3.timeParse("%Y")(d.year)))
                 .range([0, width]);
-
-            svg.append("g")
-                .attr("transform", "translate(0," + height + ")")
-                .call(d3.axisBottom(x));
-
             const y = d3
                 .scaleLinear()
                 .domain([0, 100])
                 .range([height, 0]);
 
-            svg.append("g").call(d3.axisLeft(y));
+            svg.append("g")
+                .attr("transform", "translate(0," + height + ")")
+                .call(d3.axisBottom(x)).attr('stroke-opacity', 0);
+
+            svg.append("g")
+                .call(d3.axisLeft(y))
+                .attr('stroke-opacity', 0);
+
+
             svg
                 .append("path")
                 .datum(data)
@@ -80,7 +87,7 @@ export default function IndexScoresByYears() {
 
 
     return (
-        <ChartCard title={`${sector ? sector : "Sector"} Scores By Years`}>
+        <ChartCard title={`${sector ? sector : "Sector"} Scores By Years`} text_color={text_color}>
             {(!sector && !country) ?
                 <p>Please select a country and sector</p> :
                 isLoading ? <p>Loading</p> :

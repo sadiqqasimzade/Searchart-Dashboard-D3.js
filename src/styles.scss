@@ -3,35 +3,35 @@
 @tailwind utilities;
 
 
-.bar {
-    background: whitesmoke;
-    position: relative;
-    border-radius: 20px;
+// .bar {
+//     background: whitesmoke;
+//     position: relative;
+//     border-radius: 20px;
 
-    &::after {
-        content: '';
-        animation: bar-appear 2s ease-in-out forwards 1;
+//     &::after {
+//         content: '';
+//         animation: bar-appear 2s ease-in-out forwards 1;
 
-        @keyframes bar-appear {
-            from {
-                width: 0%;
-            }
+//         @keyframes bar-appear {
+//             from {
+//                 width: 0%;
+//             }
 
-            to {
-                width: var(--bar-width);
-            }
-        }
+//             to {
+//                 width: var(--bar-width);
+//             }
+//         }
 
-        position: absolute;
-        left: 0;
-        top: 0;
-        border-radius: 20px;
-        height: 100%;
-        background: var(--color,linear-gradient(90deg, #2e00ff, #100057));
-        opacity: 0.6;
-        z-index: 5;
-    }
-}
+//         position: absolute;
+//         left: 0;
+//         top: 0;
+//         border-radius: 20px;
+//         height: 100%;
+//         background: var(--color,linear-gradient(90deg, #2e00ff, #100057));
+//         opacity: 0.6;
+//         z-index: 5;
+//     }
+// }
 
 .country-img {
     width: 40px;
@@ -48,9 +48,10 @@
 
 body {
     font-family: 'Roboto', sans-serif;
-    
+
 }
-.globalbg{
+
+.globalbg {
     background-image: url('https://avatars.mds.yandex.net/i?id=fc9dcd3d63d70fa4e1afcf7ce2b5c10e35e63b70-9181437-images-thumbs&n=13');
     background-repeat: no-repeat;
     background-position: center;
@@ -59,25 +60,37 @@ body {
 }
 
 
-.progress{
+.progress {
     position: relative;
     margin: 4px;
-    float:left;
+    float: left;
     text-align: center;
-  }
-  .barOverflow{ /* Wraps the rotating .bar */
+}
+
+.barOverflow {
+    /* Wraps the rotating .bar */
     position: relative;
-    overflow: hidden; /* Comment this line to understand the trick */
-    width: 190px; height: 90px; /* Half circle (overflow) */
-    margin-bottom: -14px; /* bring the numbers up */
-  }
-  .bar-overall{
+    overflow: hidden;
+    /* Comment this line to understand the trick */
+    width: 190px;
+    height: 90px;
+    /* Half circle (overflow) */
+    margin-bottom: -14px;
+    /* bring the numbers up */
+}
+
+.bar-overall {
     position: absolute;
-    top: 0; left: 0;
-    width: 190px; height: 190px; /* full circle! */
+    top: 0;
+    left: 0;
+    width: 190px;
+    height: 190px;
+    /* full circle! */
     border-radius: 50%;
     box-sizing: border-box;
-    border: 20px solid #eee;     /* half gray, */
-    border-bottom-color: green;  /* half azure */
-    border-right-color: green   ;
-  }
+    border: 20px solid #eee;
+    /* half gray, */
+    // border-bottom-color: rgb(255, 255, 255);
+    /* half azure */
+    // border-right-color: rgb(32, 158, 32);
+}

@@ -2,7 +2,11 @@ import { useFetchSectorRankDifferenceQuery } from "src/store/reducers/apiSlice";
 import ChartCard from "../chartCard";
 import { useSelector } from "react-redux";
 import { getCompareYears, getCountry } from "src/store/selectors/appSelectors";
-export default function SectorsAvarangeChange() {
+
+type Props={
+    text_color:string
+}
+export default function SectorsAvarangeChange({text_color}:Props) {
 
     const country = useSelector(getCountry)
     const years = useSelector(getCompareYears)
@@ -10,7 +14,7 @@ export default function SectorsAvarangeChange() {
 
 
     return (
-        <ChartCard title="Sectors Avarage Rank Change">
+        <ChartCard title="Sectors Avarage Rank Change" text_color={text_color}>
             {(!years[0] && !years[1] && !country) ?
                 <p>Please select a country,years</p> :
                 isLoading ? <p>Loading</p> :

@@ -3,14 +3,17 @@ import ChartCard from "../chartCard";
 import { useSelector } from "react-redux";
 import { getCompareYears, getCountry, getFlag } from "src/store/selectors/appSelectors";
 
-export default function OverallScoreChange() {
+type Props={
+    text_color:string
+}
+export default function OverallScoreChange({text_color}:Props) {
     const country = useSelector(getCountry)
     const years = useSelector(getCompareYears)
     const flag = useSelector(getFlag)
     const { data, isLoading, error } = useFetchCountryScoreDifferenceQuery({ country, year1: years[0], year2: years[1] })
 
     return (
-        <ChartCard title={`Overall Score Change between ${years[0] ? years[0] : 'Year1'} and ${years[1] ? years[1] : 'Year2'}`}>
+        <ChartCard title={`Overall Score Change between ${years[0] ? years[0] : 'Year1'} and ${years[1] ? years[1] : 'Year2'}`} text_color={text_color}>
             {(!years[0] && !years[1] && !country) ?
                 <p>Please select a country,years</p> :
                 isLoading ? <p>Loading</p> :

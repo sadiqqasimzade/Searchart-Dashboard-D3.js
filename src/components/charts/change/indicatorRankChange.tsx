@@ -3,7 +3,10 @@ import ChartCard from "../chartCard";
 import { useSelector } from "react-redux";
 import { getCountry, getSector, getSubsector, getCompareYears } from "src/store/selectors/appSelectors";
 
-export default function IndicatorRankChange() {
+type Props={
+    text_color:string
+}
+export default function IndicatorRankChange({text_color}:Props) {
     const country = useSelector(getCountry)
     const years = useSelector(getCompareYears)
     const sector = useSelector(getSector)
@@ -11,7 +14,7 @@ export default function IndicatorRankChange() {
 
     const { data, isLoading, error } = useFetchCountryIndexDifferenceQuery({ country, sector, subsector, year1: years[0], year2: years[1] })
     return (
-        <ChartCard title={`${subsector ? subsector : "Subsector"}'s Indicators Rank Change`}>
+        <ChartCard title={`${subsector ? subsector : "Subsector"}'s Indicators Rank Change`} text_color={text_color}>
             {(!years[0] || !years[1] || !sector || !subsector || !country) ?
                 <p>Please select a country, years, sector,subsector</p> :
                 isLoading ? <p>Loading</p> :

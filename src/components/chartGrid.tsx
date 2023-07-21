@@ -70,14 +70,14 @@ export default function ChartGrid() {
 
 
                 <p className=" grid place-content-center -rotate-90 h-full text-center text-md writing-mode-vertical-rl font-bold text-green-700">Overall Score Analysis</p>
-                <OverallPercentile />
-                <ChangeInRankAmongYears />
-                <OverallScoreChange />
+                <OverallPercentile text_color="text-green-700" />
+                <ChangeInRankAmongYears text_color="text-green-700" />
+                <OverallScoreChange text_color="text-green-700" />
 
                 <p className="grid place-content-center -rotate-90 h-full text-center text-md writing-mode-vertical-rl font-bold text-red-700">Sector Analysis</p>
-                <AvarangePercentilesByCategories />
-                <IndexScoresByYears />
-                <SectorsAvarangeChange />
+                <AvarangePercentilesByCategories text_color="text-red-700" />
+                <IndexScoresByYears text_color="text-red-700" />
+                <SectorsAvarangeChange text_color="text-red-700" />
 
                 <p></p>
                 <div className="">
@@ -89,9 +89,9 @@ export default function ChartGrid() {
                 <div></div>
 
                 <p className="grid place-content-center -rotate-90 h-full  text-center text-md font-bold text-purple-900">Indicator Analysis</p>
-                <IndicatorPercentiles />
-                <IndicatorPercentilesByYear />
-                <IndicatorRankChange />
+                <IndicatorPercentiles text_color="text-purple-900" />
+                <IndicatorPercentilesByYear text_color="text-purple-900" />
+                <IndicatorRankChange text_color="text-purple-900" />
             </div >
         </>
     )

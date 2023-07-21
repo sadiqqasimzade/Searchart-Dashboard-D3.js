@@ -4,10 +4,14 @@ import ChartCard from "../chartCard"
 import { getCountry } from "src/store/selectors/appSelectors"
 import { useSelector } from "react-redux"
 import { useEffect, useRef } from "react"
-export default function ChangeInRankAmongYears() {
+
+type Props = {
+    text_color: string
+}
+export default function ChangeInRankAmongYears({ text_color }: Props) {
 
     const country = useSelector(getCountry)
-    const { data, isLoading, error } = useFetchCountryScoreYearQuery({  country })
+    const { data, isLoading, error } = useFetchCountryScoreYearQuery({ country })
     const svgRef = useRef(null)
 
 
@@ -31,17 +35,20 @@ export default function ChangeInRankAmongYears() {
                 .domain(d3.extent(data, (d) => d3.timeParse("%Y")(d.year)))
                 .range([0, width]);
 
-                
+
             svg.append("g")
                 .attr("transform", "translate(0," + height + ")")
-                .call(d3.axisBottom(x));
+                .call(d3.axisBottom(x))
+                .attr('stroke-opacity', 0);;
 
             const y = d3
                 .scaleLinear()
                 .domain([0, 100])
                 .range([height, 0]);
 
-            svg.append("g").call(d3.axisLeft(y));
+            svg.append("g")
+                .call(d3.axisLeft(y))
+                .attr('stroke-opacity', 0);;
 
             svg
                 .append("path")
@@ -77,7 +84,7 @@ export default function ChangeInRankAmongYears() {
         }
     }, [data])
     return (
-        <ChartCard title="Change in Rank Among Years">
+        <ChartCard title="Change in Rank Among Years" text_color={text_color}>
             {(!country) ?
                 <p>Please select a country</p> :
                 isLoading ? <p>Loading</p> :

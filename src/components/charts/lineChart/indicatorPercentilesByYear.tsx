@@ -4,7 +4,11 @@ import { getCountry, getSector, getSubsector, getIndicator } from "src/store/sel
 import ChartCard from "../chartCard";
 import { useEffect, useRef } from "react";
 import * as d3 from "d3";
-export default function IndicatorPercentilesByYear() {
+
+type Props={
+    text_color:string
+}
+export default function IndicatorPercentilesByYear({text_color}:Props) {
     const country = useSelector(getCountry)
     const sector = useSelector(getSector)
     const subsector = useSelector(getSubsector)
@@ -35,14 +39,17 @@ export default function IndicatorPercentilesByYear() {
 
             svg.append("g")
                 .attr("transform", "translate(0," + height + ")")
-                .call(d3.axisBottom(x));
+                .call(d3.axisBottom(x))
+                .attr('stroke-opacity', 0);;
 
             const y = d3
                 .scaleLinear()
                 .domain([0, 100])
                 .range([height, 0]);
 
-            svg.append("g").call(d3.axisLeft(y));
+            svg.append("g")
+            .call(d3.axisLeft(y))
+            .attr('stroke-opacity', 0);;
 
             svg
                 .append("path")
@@ -69,7 +76,7 @@ export default function IndicatorPercentilesByYear() {
         }
     }, [data])
     return (
-        <ChartCard title={`${indicator ? indicator : "Indicator"} 's percentiles by years`}>
+        <ChartCard title={`${indicator ? indicator : "Indicator"} 's percentiles by years`} text_color={text_color}>
             {(!indicator && !sector && !subsector && !country) ?
                 <p>Please select a country,indicator, sector,subsector</p> :
                 isLoading ? <p>Loading</p> :
