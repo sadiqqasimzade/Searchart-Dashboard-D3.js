@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 // .bar {
 //     background: whitesmoke;
 //     position: relative;
@@ -41,22 +40,72 @@
 
 
 .custom-grid-cols-4 {
-    grid-template-columns: 2fr 10fr 10fr 10fr
+    grid-template-columns: 1% auto auto auto
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
-body {
+html {
     font-family: 'Roboto', sans-serif;
 
+    *::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+
+    *::-webkit-scrollbar-track {
+        background: transparent;
+        border: 1px #D9D9D9 solid;
+        border-radius: 100vh;
+
+    }
+
+    *::-webkit-scrollbar-thumb {
+        background: #A1A2A3;
+        border-radius: 100vh;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        *::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        *::-webkit-scrollbar-track {
+            background: transparent;
+            border: 5px #2C3645 solid;
+            border-radius: 100vh;
+
+        }
+
+        *::-webkit-scrollbar-thumb {
+            background: #4A628A;
+            border-radius: 100vh;
+        }
+    }
+
+    //   &::-webkit-scrollbar-thumb:hover {
+    //     background: #c0a0b9;
+    //   }
 }
 
 .globalbg {
-    background-image: url('https://avatars.mds.yandex.net/i?id=fc9dcd3d63d70fa4e1afcf7ce2b5c10e35e63b70-9181437-images-thumbs&n=13');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
 
+    @media (prefers-color-scheme: dark) {
+        &::before {
+            filter: invert(1);
+        }
+    }
+
+    &::before {
+        opacity: 0.1;
+        z-index: 0;
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        content: url('/bg_map.png');
+    }
 }
 
 
@@ -68,15 +117,11 @@ body {
 }
 
 .barOverflow {
-    /* Wraps the rotating .bar */
     position: relative;
     overflow: hidden;
-    /* Comment this line to understand the trick */
     width: 190px;
     height: 90px;
-    /* Half circle (overflow) */
     margin-bottom: -14px;
-    /* bring the numbers up */
 }
 
 .bar-overall {
@@ -85,12 +130,42 @@ body {
     left: 0;
     width: 190px;
     height: 190px;
-    /* full circle! */
     border-radius: 50%;
     box-sizing: border-box;
     border: 20px solid #eee;
-    /* half gray, */
-    // border-bottom-color: rgb(255, 255, 255);
-    /* half azure */
-    // border-right-color: rgb(32, 158, 32);
+
+    @media (prefers-color-scheme: dark) {
+        border: 20px solid #293343;
+    }
+}
+
+
+.react-select {
+    &__control {
+        border-radius: 0.5rem !important;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        &__control {
+            background-color: #293F64 !important;
+        }
+
+        &__menu {
+            background-color: #293F64 !important;
+
+        }
+
+        &__input {
+            color: #A7B4CA !important;
+
+            &::placeholder {
+                color: #A7B4CA !important;
+
+            }
+        }
+
+        &__single-value {
+            color: #A7B4CA !important;
+        }
+    }
 }

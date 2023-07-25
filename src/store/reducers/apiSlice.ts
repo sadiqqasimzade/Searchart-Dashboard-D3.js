@@ -7,7 +7,7 @@ import { AvangeScore, CountryAverageScore, CountryDiagram, CountryInfo, CountryR
 export const apiSlice = createApi({
     reducerPath: 'api',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'http://192.168.8.229:8000/api/',
+        baseUrl: 'http://192.168.8.151:8000/api/',
     }),
 
     endpoints: builder => ({

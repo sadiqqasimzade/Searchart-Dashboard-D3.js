@@ -38,7 +38,7 @@ export type CountryScoreDifference = {
 // /api/country-score-year/?country=Azerbaijan
 export type CountryScoreYear = {
     "year": string,
-    "avarage_score": number
+    "average_score": number
 }[]
 
 // /sector-average-score/?country=Azerbaijan&year=2020

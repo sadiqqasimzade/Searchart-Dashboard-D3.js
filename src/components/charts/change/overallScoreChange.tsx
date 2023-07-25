@@ -3,10 +3,10 @@ import ChartCard from "../chartCard";
 import { useSelector } from "react-redux";
 import { getCompareYears, getCountry, getFlag } from "src/store/selectors/appSelectors";
 
-type Props={
-    text_color:string
+type Props = {
+    text_color: string
 }
-export default function OverallScoreChange({text_color}:Props) {
+export default function OverallScoreChange({ text_color }: Props) {
     const country = useSelector(getCountry)
     const years = useSelector(getCompareYears)
     const flag = useSelector(getFlag)
@@ -31,16 +31,21 @@ export default function OverallScoreChange({text_color}:Props) {
                                             : data.score_difference < 0 ? <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="red" className="w-10 h-10">
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6L9 12.75l4.286-4.286a11.948 11.948 0 014.306 6.43l.776 2.898m0 0l3.182-5.511m-3.182 5.51l-5.511-3.181" />
                                             </svg>
-                                                : <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="blue" className="w-10 h-10">
+                                                : <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="gray" className="w-10 h-10">
                                                     <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
                                                 </svg>
                                         }
-                                        <p className="border-2  border-gray-400 py-1 px-3 flex justify-center items-center">{data.score_difference}</p>
+                                        <p className={`border-2 min-w-[50px] border-gray-400 dark:border-white py-1 px-3 flex justify-center items-center ${data.score_difference > 0 ? 'text-green-500' : data.score_difference< 0 ? 'text-red-500' : 'text-gray-500'}`}>{data.score_difference}</p>
                                     </div>
                                 </div>
                             </div>
                             <div className="py-3">
-                                <div className="bar h-4" style={{ '--bar-width': `${(data.score_difference > 0 ? data.score_difference : -data.score_difference) * 100}%`,'--color': data.score_difference > 0 ? 'green' : 'red' }}></div>
+                                <div className="relative h-5 w-full rounded-lg overflow-hidden bg-stone-200">
+                                    <div
+                                        className={`absolute h-full w-full rounded transition-all duration-500 bg-blue-700`}
+                                        style={{ width: (data.score_difference > 0 ? data.score_difference : - data.score_difference) * 100 + '%', backgroundColor: `${data.score_difference > 0 ? 'green' : 'red'}` }}
+                                    ></div>
+                                </div>
                             </div>
                         </div>
             }

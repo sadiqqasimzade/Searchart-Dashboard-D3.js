@@ -7,6 +7,7 @@ type AppState = {
     indicator: string | null
     compareYears: [string | null, string | null]
     flag: string | null
+    tableMode: boolean
 }
 const initialState: AppState = {
     compareYears: [null, null],
@@ -15,7 +16,8 @@ const initialState: AppState = {
     sector: null,
     subsector: null,
     year: null,
-    flag: null
+    flag: null,
+    tableMode: false
 }
 
 
@@ -49,9 +51,12 @@ const appSlice = createSlice({
         },
         changeFlag(state, action: PayloadAction<string>) {
             state.flag = action.payload
+        },
+        changeTableMode(state, action: PayloadAction<boolean>) {
+            state.tableMode = action.payload
         }
     }
 })
 
-export const { changeFlag,changeComapreYears1, changeComapreYears2, changeCountry, changeIndicator, changeSector, changeSubsector, changeYear } = appSlice.actions
+export const { changeTableMode, changeFlag, changeComapreYears1, changeComapreYears2, changeCountry, changeIndicator, changeSector, changeSubsector, changeYear } = appSlice.actions
 export default appSlice.reducer

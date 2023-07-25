@@ -18,7 +18,7 @@ export default function OverallPercentile({ text_color }: Props) {
                 isLoading ? <p>Loading</p> :
                     error ? <p>Error</p> :
                         data &&
-                        <div className="w-full h-full flex justify-center items-center  flex-col">
+                        <div className="w-full h-full flex justify-center items-center flex-col">
                             <div className="flex items-center justify-between gap-5">
                                 <p>{data.country}</p>
                                 <img src={flag} className="h-5 w-8" alt="country flag" />

@@ -5,8 +5,8 @@ import store from 'src/store/reducers/rootReducer';
 export function App() {
   return (
     <Provider store={store}>
-      <div className='bg-gray-100 min-h-screen globalbg'>
-        <div className='py-3 px-10 text-black rounded-xl'>
+      <div className='bg-gray-100 min-h-screen globalbg dark:bg-darkbg'>
+        <div className='py-3 px-10 dark:text-white rounded-xl z-10 relative'>
           <ChartGrid />
         </div>
       </div>

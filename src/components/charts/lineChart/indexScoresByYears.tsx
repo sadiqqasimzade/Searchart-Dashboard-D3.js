@@ -2,7 +2,7 @@ import * as d3 from "d3"
 import { useFetchYearScoreQuery } from "src/store/reducers/apiSlice";
 import ChartCard from "../chartCard";
 import { useSelector } from "react-redux";
-import { getCountry, getSector } from "src/store/selectors/appSelectors";
+import { getCountry, getSector, getTableMode } from "src/store/selectors/appSelectors";
 import { useEffect, useRef } from "react";
 
 type Props = {
@@ -10,19 +10,22 @@ type Props = {
 }
 export default function IndexScoresByYears({ text_color }: Props) {
 
-    // set the dimensions and margins of the graph
+
 
     const svgRef = useRef(null)
     const country = useSelector(getCountry)
     const sector = useSelector(getSector)
     const { data, isLoading, error } = useFetchYearScoreQuery({ country, sector })
+    const tableMode = useSelector(getTableMode)
+
+    const tooltipRef = useRef(null)
     useEffect(() => {
-        if (data && data?.length > 0) {
+        if (data && data?.length > 0 && tableMode === false) {
 
             // Set the dimensions and margins of the graph
             const margin = { top: 10, right: 30, bottom: 30, left: 60 },
                 width = 460 - margin.left - margin.right,
-                height = 200 - margin.top - margin.bottom;
+                height = 150 - margin.top - margin.bottom;
             d3.select(svgRef.current).selectAll("*").remove()
 
             const svg = d3
@@ -80,9 +83,37 @@ export default function IndexScoresByYears({ text_color }: Props) {
                 .attr("transform", `translate(${0},0)`)
                 .style("opacity", "0.1")
                 .call(make_y_gridlines)
+
+
+            //create dots
+            // Add data points as circles and attach event listeners for tooltips
+            svg.selectAll("circle")
+                .data(data)
+                .enter()
+                .append("circle")
+                .attr("cx", d => x(d3.timeParse("%Y")(d.year)))
+                .attr("cy", d => y(d.score))
+                .attr("r", 5).style('opacity', '0')
+                .attr("fill", "steelblue")
+                .on("mouseover", (event, d) => {
+                    // Show the tooltip on mouseover
+                    const tooltip = tooltipRef.current as HTMLDivElement
+                    event.target.style = 'opacity:1'
+                    tooltip.style.display = "block";
+                    tooltip.style.left = event.pageX + "px";
+                    tooltip.style.top = event.pageY + "px";
+                    tooltip.textContent = `Date: ${d.year} Value: ${d.score}`;
+                })
+                .on("mouseout", (event) => {
+                    // Hide the tooltip on mouseout
+                    event.target.style = 'opacity:0'
+
+                    const tooltip = tooltipRef.current as HTMLDivElement
+                    tooltip.style.display = "none";
+                });
         }
 
-    }, [data])
+    }, [data, tableMode])
 
 
 
@@ -92,8 +123,46 @@ export default function IndexScoresByYears({ text_color }: Props) {
                 <p>Please select a country and sector</p> :
                 isLoading ? <p>Loading</p> :
                     error ? <p>Error</p> :
-                        data && <div ref={svgRef}></div>
+                        data && (tableMode ?
+                            <div className="max-w-md mx-auto relative">
+                                <h2 className="text-lg  text-center">Years</h2>
+                                <p className="absolute -rotate-90 -left-3 top-20 text-sm">Score</p>
+                                <div className="py-3 px-6">
+                                    <div className="overflow-auto my-3 rounded-xl">
+                                        <table className="text-sm">
+                                            <thead className="dark:bg-chartCardHeader bg-lightChartHead uppercase">
+                                                <tr className="">
+                                                    {data.map(d =>
+                                                        <th scope="col" className="py-2 px-2 text-left tracking-wider">
+                                                            {d.year}
+                                                        </th>
+                                                    )}
+                                                </tr>
+                                            </thead>
+                                            <tbody className="">
 
+                                                <tr className="">
+
+                                                    {data.map(d =>
+                                                        <td className="py-2 px-2 dark:text-white text-lightTableText">
+                                                            {d.score}
+                                                        </td>
+                                                    )}
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            :
+                            <>
+                                <div ref={tooltipRef} className=" hidden absolute pointer-events-none w-28 border-gray-700 dark:bg-chartCardHeader  border-2 h-16 p-2 text-sm bg-gray-100 rounded-2xl"></div>
+                                <div ref={svgRef}>
+
+                                </div>
+                            </>
+                        )
             }
         </ChartCard>
     )

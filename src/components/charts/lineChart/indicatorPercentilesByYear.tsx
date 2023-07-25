@@ -1,27 +1,28 @@
 import { useSelector } from "react-redux";
 import { useFetchCountryDiagramQuery } from "src/store/reducers/apiSlice";
-import { getCountry, getSector, getSubsector, getIndicator } from "src/store/selectors/appSelectors";
+import { getCountry, getSector, getSubsector, getIndicator, getTableMode } from "src/store/selectors/appSelectors";
 import ChartCard from "../chartCard";
 import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 
-type Props={
-    text_color:string
+type Props = {
+    text_color: string
 }
-export default function IndicatorPercentilesByYear({text_color}:Props) {
+export default function IndicatorPercentilesByYear({ text_color }: Props) {
     const country = useSelector(getCountry)
     const sector = useSelector(getSector)
     const subsector = useSelector(getSubsector)
     const indicator = useSelector(getIndicator)
+    const tableMode = useSelector(getTableMode)
     const { data, isLoading, error } = useFetchCountryDiagramQuery({ country, indicator, sector, subsector })
-
+    const tooltipRef = useRef(null)
     const svgRef = useRef(null)
     useEffect(() => {
-        if (data && data?.length > 0) {
+        if (data && data?.length > 0 && tableMode === false) {
 
             const margin = { top: 10, right: 30, bottom: 30, left: 60 },
                 width = 460 - margin.left - margin.right,
-                height = 200 - margin.top - margin.bottom;
+                height = 150 - margin.top - margin.bottom;
             d3.select(svgRef.current).selectAll("*").remove()
 
             const svg = d3
@@ -48,8 +49,8 @@ export default function IndicatorPercentilesByYear({text_color}:Props) {
                 .range([height, 0]);
 
             svg.append("g")
-            .call(d3.axisLeft(y))
-            .attr('stroke-opacity', 0);;
+                .call(d3.axisLeft(y))
+                .attr('stroke-opacity', 0);;
 
             svg
                 .append("path")
@@ -73,15 +74,77 @@ export default function IndicatorPercentilesByYear({text_color}:Props) {
                 .attr("transform", `translate(${0},0)`)
                 .style("opacity", "0.1")
                 .call(make_y_gridlines)
+
+            //create dots
+            // Add data points as circles and attach event listeners for tooltips
+            svg.selectAll("circle")
+                .data(data)
+                .enter()
+                .append("circle")
+                .attr("cx", d => x(d3.timeParse("%Y")(d.year)))
+                .attr("cy", d => y(d.score))
+                .attr("r", 5).style('opacity', '0')
+                .attr("fill", "steelblue")
+                .on("mouseover", (event, d) => {
+                    // Show the tooltip on mouseover
+                    const tooltip = tooltipRef.current as HTMLDivElement
+                    event.target.style = 'opacity:1'
+                    tooltip.style.display = "block";
+                    tooltip.style.left = event.pageX + "px";
+                    tooltip.style.top = event.pageY + "px";
+                    tooltip.textContent = `Date: ${d.year} Value: ${d.score}`;
+                })
+                .on("mouseout", (event) => {
+                    // Hide the tooltip on mouseout
+                    event.target.style = 'opacity:0'
+
+                    const tooltip = tooltipRef.current as HTMLDivElement
+                    tooltip.style.display = "none";
+                });
         }
-    }, [data])
+    }, [data, tableMode])
     return (
         <ChartCard title={`${indicator ? indicator : "Indicator"} 's percentiles by years`} text_color={text_color}>
             {(!indicator && !sector && !subsector && !country) ?
                 <p>Please select a country,indicator, sector,subsector</p> :
                 isLoading ? <p>Loading</p> :
-                    error ? <p>Error</p> :
-                        <div ref={svgRef}></div>
+                    error ? <p>Error</p> : data && (tableMode ?
+                        <div className="max-w-md mx-auto relative">
+                            <h2 className="text-lg text-center">Years</h2>
+                            <p className="absolute -rotate-90 -left-3 top-20 text-sm">Score</p>
+                            <div className="py-3 px-6">
+                                <div className="overflow-auto my-3 rounded-xl">
+                                    <table className="text-sm">
+                                        <thead className="dark:bg-chartCardHeader bg-lightChartHead uppercase">
+                                            <tr className="">
+                                                {data.map(d =>
+                                                    <th scope="col" className="py-2 px-2 text-left tracking-wider">
+                                                        {d.year}
+                                                    </th>
+                                                )}
+                                            </tr>
+                                        </thead>
+                                        <tbody className="">
+                                            <tr className="">
+                                                {data.map(d =>
+                                                    <td className="py-2 px-2 dark:text-white text-lightTableText">
+                                                        {d.score}
+                                                    </td>
+                                                )}
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        :
+                        <>
+                            <div ref={tooltipRef} className="hidden absolute pointer-events-none w-28 border-gray-700 dark:bg-chartCardHeader  border-2 h-16 p-2 text-sm bg-gray-100 rounded-2xl"></div>
+                            <div ref={svgRef}>
+
+                            </div>
+                        </>
+                    )
             }
 
         </ChartCard>
