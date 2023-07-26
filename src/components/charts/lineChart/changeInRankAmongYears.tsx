@@ -18,9 +18,9 @@ export default function ChangeInRankAmongYears({ text_color }: Props) {
     useEffect(() => {
         if (data && data?.length > 0 && tableMode === false) {
             // Set the dimensions and margins of the graph
-            const margin = { top: 10, right: 30, bottom: 30, left: 60 },
-                width = 460 - margin.left - margin.right,
-                height = 150 - margin.top - margin.bottom;
+            const margin = { top: 10, right: 20, bottom: 30, left: 30 },
+            width = 420 - margin.left - margin.right,
+            height = 150 - margin.top - margin.bottom;
             d3.select(svgRef.current).selectAll("*").remove()
             //Svg element
             const svg = d3
@@ -127,8 +127,10 @@ export default function ChangeInRankAmongYears({ text_color }: Props) {
                                     <div className="overflow-auto my-3 rounded-xl">
                                         <table className="text-sm">
                                             <thead className="dark:bg-chartCardHeader bg-lightChartHead uppercase">
+
                                                 <tr className="">
-                                                    {data.map(d =>
+                                                    {data.map((d, i) =>
+                                                        i % 5 === 0 &&
                                                         <th scope="col" className="py-2 px-2 text-left tracking-wider">
                                                             {d.year}
                                                         </th>
@@ -139,7 +141,8 @@ export default function ChangeInRankAmongYears({ text_color }: Props) {
 
                                                 <tr className="">
 
-                                                    {data.map(d =>
+                                                    {data.map((d, i) =>
+                                                        i % 5 === 0 &&
                                                         <td className="py-2 px-2 dark:text-white text-lightTableText">
                                                             {d.average_score}
                                                         </td>
@@ -152,12 +155,12 @@ export default function ChangeInRankAmongYears({ text_color }: Props) {
                                 </div>
                             </div>
                             :
-                            <>
+                            <div className="flex justify-center">
                                 <div ref={tooltipRef} className="hidden absolute pointer-events-none w-28 border-gray-700 dark:bg-chartCardHeader border-2 h-16 p-2 text-sm bg-gray-100 rounded-2xl"></div>
                                 <div ref={svgRef}>
 
                                 </div>
-                            </>
+                            </div>
                         )}
 
         </ChartCard>)

@@ -21,7 +21,7 @@ export default function OverallScoreChange({ text_color }: Props) {
                         data &&
                         <div className="flex flex-col">
                             <div className="flex justify-between">
-                                <img src={flag} alt="Flag" className="w-32 h-20 rounded-xl " />
+                                <img src={flag} alt="Flag" className="w-32 h-20 rounded-xl" />
                                 <div className="flex flex-col gap-5">
                                     <p className="font-semibold">Country : {country}</p>
                                     <div className="flex flex-row gap-3">
