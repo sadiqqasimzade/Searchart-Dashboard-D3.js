@@ -14,6 +14,10 @@ import { getCompareYears, getCountry, getIndicator, getSector, getSubsector, get
 import { changeComapreYears1, changeComapreYears2, changeCountry, changeFlag, changeIndicator, changeSector, changeSubsector, changeTableMode, changeYear } from "src/store/reducers/appSlice";
 import { useEffect } from "react";
 import Select from 'react-select';
+import { colors } from "src/utils/constans";
+import makeAnimated from 'react-select/animated';
+
+const animatedComponents = makeAnimated();
 
 export default function ChartGrid() {
     const dispatch = useDispatch()
@@ -31,6 +35,19 @@ export default function ChartGrid() {
     const { data: subsectors } = useFetchUniqueSubsectorsQuery({ sector })
     const { data: years } = useFetchUniqueYearsQuery()
     const { data: indicators } = useFetchUniqueIndicatorsQuery({ subsector })
+
+
+    useEffect(()=>{
+        if(subsectors){
+            dispatch(changeSubsector(subsectors[0]))
+        }
+    },[subsectors])
+    useEffect(()=>{
+        if(indicators){
+            dispatch(changeIndicator([indicators[0]]))
+        }
+    },[indicators])
+
     useEffect(() => {
         if (country) {
             fetch(`https://restcountries.com/v3.1/name/${country}`).then(res => res.json()).then((d) => {
@@ -67,11 +84,11 @@ export default function ChartGrid() {
                         <p className="font-bold">Country</p>
                         <Select
                             className=""
-                            defaultValue={'Select'}
+                            defaultValue={{ value: country, label: country }}
                             isSearchable
                             name="color"
-                            options={countries?.map(c => { return { value: c, label: c } })}
-                            onChange={(e) => { dispatch(changeCountry(e.value)) }}
+                            options={countries?.map(c => { return { value: c, label: c } }) as []}
+                            onChange={e => dispatch(changeCountry(e.value))}
                             classNamePrefix={'react-select'}
                         />
                     </div>
@@ -105,8 +122,55 @@ export default function ChartGrid() {
                 <div className="">
                     <Filter head_title='Subsector' options={subsectors} state={subsector} setState={changeSubsector} depends_on={sector} default_disabled />
                 </div>
-                <div className="">
-                    <Filter head_title='Indicator' options={indicators} state={indicator} depends_on={subsector} setState={changeIndicator} default_disabled />
+                <div className=" flex flex-col">
+                    <p className="font-bold">Indicator</p>
+                    <Select
+                        name="color"
+                        closeMenuOnSelect={false}
+                        defaultValue={indicator.length > 0 ? indicator : null}
+                        value={indicator.map((c, i) => { return { value: c, label: c, color: colors[i] } })}
+                        isMulti
+                        options={indicators?.map((c, i) => { return { value: c, label: c, color: 'white' } }) as []}
+                        onChange={e => {
+                            dispatch(changeIndicator(e.map(c => c.value)))
+                        }}
+                        components={animatedComponents}
+                        classNamePrefix={'react-select'}
+                        styles={{
+                            control: (styles) => ({ ...styles, backgroundColor: 'white', overflow: "auto", height: '20px' }),
+                            option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+                                return {
+                                    ...styles,
+                                    backgroundColor: '',
+                                    ":hover": {
+                                        backgroundColor: 'blue'
+                                    },
+                                    color: data.color,
+                                };
+                            },
+                            multiValue: (styles, { data }) => {
+                                return {
+                                    ...styles,
+                                    backgroundColor: 'gray',
+                                };
+                            },
+                            multiValueLabel: (styles, { data }) => ({
+                                ...styles,
+                                color: data.color,
+
+                            }),
+                            multiValueRemove: (styles, { data }) => ({
+                                ...styles,
+                                ':hover': {
+                                    backgroundColor: 'red',
+                                    color: 'white',
+                                },
+                            }),
+                            indicatorsContainer: (styles) => ({ ...styles, display: 'flex',alignItems:'start' }),
+                            
+                        }}
+                    />
+
                 </div>
                 <div></div>
 

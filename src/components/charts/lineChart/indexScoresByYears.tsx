@@ -4,6 +4,8 @@ import ChartCard from "../chartCard";
 import { useSelector } from "react-redux";
 import { getCountry, getSector, getTableMode } from "src/store/selectors/appSelectors";
 import { useEffect, useRef } from "react";
+import Table from "../table";
+import { SerializedError } from "@reduxjs/toolkit";
 
 type Props = {
     text_color: string
@@ -24,8 +26,8 @@ export default function IndexScoresByYears({ text_color }: Props) {
 
             // Set the dimensions and margins of the graph
             const margin = { top: 10, right: 20, bottom: 30, left: 30 },
-            width = 420 - margin.left - margin.right,
-            height = 150 - margin.top - margin.bottom;
+                width = 420 - margin.left - margin.right,
+                height = 150 - margin.top - margin.bottom;
             d3.select(svgRef.current).selectAll("*").remove()
 
             const svg = d3
@@ -42,7 +44,7 @@ export default function IndexScoresByYears({ text_color }: Props) {
                 .range([0, width]);
             const y = d3
                 .scaleLinear()
-                .domain([0, 100])
+                .domain([0, d3.max(data, d => d.score)])
                 .range([height, 0]);
 
             svg.append("g")
@@ -50,7 +52,7 @@ export default function IndexScoresByYears({ text_color }: Props) {
                 .call(d3.axisBottom(x)).attr('stroke-opacity', 0);
 
             svg.append("g")
-                .call(d3.axisLeft(y))
+                .call(d3.axisLeft(y).ticks(5))
                 .attr('stroke-opacity', 0);
 
 
@@ -100,8 +102,8 @@ export default function IndexScoresByYears({ text_color }: Props) {
                     const tooltip = tooltipRef.current as HTMLDivElement
                     event.target.style = 'opacity:1'
                     tooltip.style.display = "block";
-                    tooltip.style.left = event.pageX + "px";
-                    tooltip.style.top = event.pageY + "px";
+                    tooltip.style.left = event.target.cx.baseVal.value + "px";
+                    tooltip.style.top = event.target.cy.baseVal.value + 30 + "px";
                     tooltip.textContent = `Date: ${d.year} Value: ${d.score}`;
                 })
                 .on("mouseout", (event) => {
@@ -119,54 +121,19 @@ export default function IndexScoresByYears({ text_color }: Props) {
 
     return (
         <ChartCard title={`${sector ? sector : "Sector"} Scores By Years`} text_color={text_color}>
-            {(!sector && !country) ?
-                <p>Please select a country and sector</p> :
-                isLoading ? <p>Loading</p> :
-                    error ? <p>Error</p> :
-                        data && (tableMode ?
-                            <div className="max-w-md mx-auto relative">
-                                <h2 className="text-lg  text-center">Years</h2>
-                                <p className="absolute -rotate-90 -left-3 top-20 text-sm">Score</p>
-                                <div className="py-3 px-6">
-                                    <div className="overflow-auto my-3 rounded-xl">
-                                        <table className="text-sm">
-                                            <thead className="dark:bg-chartCardHeader bg-lightChartHead uppercase">
-                                                <tr className="">
-                                                    {data.map((d, i) =>
-                                                        i % 5 === 0 &&
+            {isLoading ? <p>Loading</p> :
+                error ? <p>{(error as SerializedError).message}</p> :
+                    data &&
+                    <div className="relative flex justify-center flex-col ">
+                        <div className={`${tableMode ? 'block' : 'hidden'}`}>
+                            <Table data={[data]} x_key="year" y_key="score" x_title="Year" y_title="Score" />
+                        </div>
 
-                                                        <th scope="col" className="py-2 px-2 text-left tracking-wider">
-                                                            {d.year}
-                                                        </th>
-                                                    )}
-                                                </tr>
-                                            </thead>
-                                            <tbody className="">
-
-                                                <tr className="">
-
-                                                    {data.map((d, i) =>
-                                                        i % 5 === 0 &&
-
-                                                        <td className="py-2 px-2 dark:text-white text-lightTableText">
-                                                            {d.score}
-                                                        </td>
-                                                    )}
-                                                </tr>
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                            :
-                            <div className="flex justify-center">
-                                <div ref={tooltipRef} className=" hidden absolute pointer-events-none w-28 border-gray-700 dark:bg-chartCardHeader  border-2 h-16 p-2 text-sm bg-gray-100 rounded-2xl"></div>
-                                <div ref={svgRef}>
-
-                                </div>
-                            </div>
-                        )
+                        <div className={`${tableMode ? 'hidden' : 'block'} `}>
+                            <div ref={tooltipRef} className="hidden absolute pointer-events-none w-28 border-gray-700 dark:bg-chartCardHeader border-2 h-16 p-2 text-sm bg-gray-100 rounded-2xl"></div>
+                            <div ref={svgRef}></div>
+                        </div>
+                    </div>
             }
         </ChartCard>
     )

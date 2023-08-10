@@ -2,43 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-// .bar {
-//     background: whitesmoke;
-//     position: relative;
-//     border-radius: 20px;
-
-//     &::after {
-//         content: '';
-//         animation: bar-appear 2s ease-in-out forwards 1;
-
-//         @keyframes bar-appear {
-//             from {
-//                 width: 0%;
-//             }
-
-//             to {
-//                 width: var(--bar-width);
-//             }
-//         }
-
-//         position: absolute;
-//         left: 0;
-//         top: 0;
-//         border-radius: 20px;
-//         height: 100%;
-//         background: var(--color,linear-gradient(90deg, #2e00ff, #100057));
-//         opacity: 0.6;
-//         z-index: 5;
-//     }
-// }
-
-.country-img {
-    width: 40px;
-    height: 25px;
-}
-
-
-
 .custom-grid-cols-4 {
     grid-template-columns: 1% auto auto auto
 }
@@ -83,10 +46,6 @@ html {
             border-radius: 100vh;
         }
     }
-
-    //   &::-webkit-scrollbar-thumb:hover {
-    //     background: #c0a0b9;
-    //   }
 }
 
 .globalbg {
@@ -168,4 +127,24 @@ html {
             color: #A7B4CA !important;
         }
     }
+}
+
+.table-container{
+    *:first-child{
+        p{
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+    }
+    :last-child{
+        p{
+            border-bottom-right-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+    }
+}
+
+.left-border{
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
 }

@@ -4,6 +4,8 @@ import ChartCard from "../chartCard"
 import { getCountry, getTableMode } from "src/store/selectors/appSelectors"
 import { useSelector } from "react-redux"
 import { useEffect, useRef } from "react"
+import Table from "../table"
+import { SerializedError } from "@reduxjs/toolkit"
 
 type Props = {
     text_color: string
@@ -13,14 +15,14 @@ export default function ChangeInRankAmongYears({ text_color }: Props) {
     const country = useSelector(getCountry)
     const { data, isLoading, error } = useFetchCountryScoreYearQuery({ country })
     const svgRef = useRef(null)
-    const tooltipRef = useRef(null)
+    const tooltipRef = useRef<HTMLDivElement>(null)
     const tableMode = useSelector(getTableMode)
     useEffect(() => {
         if (data && data?.length > 0 && tableMode === false) {
             // Set the dimensions and margins of the graph
             const margin = { top: 10, right: 20, bottom: 30, left: 30 },
-            width = 420 - margin.left - margin.right,
-            height = 150 - margin.top - margin.bottom;
+                width = 420 - margin.left - margin.right,
+                height = 150 - margin.top - margin.bottom;
             d3.select(svgRef.current).selectAll("*").remove()
             //Svg element
             const svg = d3
@@ -35,11 +37,11 @@ export default function ChangeInRankAmongYears({ text_color }: Props) {
             //Scale
             const xScale = d3
                 .scaleTime()
-                .domain(d3.extent(data, (d) => d3.timeParse("%Y")(d.year)))
+                .domain(d3.extent(data, d => d3.timeParse("%Y")(d.year)))
                 .range([0, width]);
             const yScale = d3
                 .scaleLinear()
-                .domain([0, 100])
+                .domain([0, d3.max(data, d => d.average_score)])
                 .range([height, 0]);
 
 
@@ -50,7 +52,7 @@ export default function ChangeInRankAmongYears({ text_color }: Props) {
 
 
             svg.append("g")
-                .call(d3.axisLeft(yScale))
+                .call(d3.axisLeft(yScale).ticks(5))
                 .attr('stroke-opacity', 0);;
 
             svg
@@ -60,8 +62,8 @@ export default function ChangeInRankAmongYears({ text_color }: Props) {
                 .attr("stroke", "red")
                 .attr("stroke-width", 2.5)
                 .attr("d", d3.line()
-                    .x((d) => xScale(d3.timeParse("%Y")(d.year)))
-                    .y((d) => yScale(d.average_score))
+                    .x(d => xScale(d3.timeParse("%Y")(d.year)))
+                    .y(d => yScale(d.average_score))
                 );
 
             const make_x_gridlines = d3.axisBottom(xScale)
@@ -100,8 +102,8 @@ export default function ChangeInRankAmongYears({ text_color }: Props) {
                     const tooltip = tooltipRef.current as HTMLDivElement
                     event.target.style = 'opacity:1'
                     tooltip.style.display = "block";
-                    tooltip.style.left = event.pageX + "px";
-                    tooltip.style.top = event.pageY + "px";
+                    tooltip.style.left = event.target.cx.baseVal.value + "px";
+                    tooltip.style.top = event.target.cy.baseVal.value + 30 + "px";
                     tooltip.textContent = `Date: ${d.year} Value: ${d.average_score}`;
                 })
                 .on("mouseout", (event) => {
@@ -115,53 +117,20 @@ export default function ChangeInRankAmongYears({ text_color }: Props) {
     }, [data, tableMode])
     return (
         <ChartCard title="Change in Rank Among Years" text_color={text_color}>
-            {(!country) ?
-                <p>Please select a country</p> :
-                isLoading ? <p>Loading</p> :
-                    error ? <p>Error</p> :
-                        data && (tableMode ?
-                            <div className="max-w-md mx-auto relative">
-                                <h2 className="text-lg  text-center">Years</h2>
-                                <p className="absolute -rotate-90 -left-3 top-20 text-sm">Rank</p>
-                                <div className="py-3 px-6">
-                                    <div className="overflow-auto my-3 rounded-xl">
-                                        <table className="text-sm">
-                                            <thead className="dark:bg-chartCardHeader bg-lightChartHead uppercase">
+            {isLoading ? <p>Loading</p> :
+                error ? <p>{(error as SerializedError).message}</p> :
+                    data &&
 
-                                                <tr className="">
-                                                    {data.map((d, i) =>
-                                                        i % 5 === 0 &&
-                                                        <th scope="col" className="py-2 px-2 text-left tracking-wider">
-                                                            {d.year}
-                                                        </th>
-                                                    )}
-                                                </tr>
-                                            </thead>
-                                            <tbody className="">
+                    <div className="relative flex justify-center flex-col h-full">
+                        <div className={`${tableMode ? 'block' : 'hidden'}`}>
+                            <Table data={[data]} x_key="year" y_key="average_score" x_title="Year" y_title="Rank" />
+                        </div>
 
-                                                <tr className="">
-
-                                                    {data.map((d, i) =>
-                                                        i % 5 === 0 &&
-                                                        <td className="py-2 px-2 dark:text-white text-lightTableText">
-                                                            {d.average_score}
-                                                        </td>
-                                                    )}
-                                                </tr>
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                            :
-                            <div className="flex justify-center">
-                                <div ref={tooltipRef} className="hidden absolute pointer-events-none w-28 border-gray-700 dark:bg-chartCardHeader border-2 h-16 p-2 text-sm bg-gray-100 rounded-2xl"></div>
-                                <div ref={svgRef}>
-
-                                </div>
-                            </div>
-                        )}
-
+                        <div className={`${tableMode ? 'hidden' : 'block'}`}>
+                            <div ref={tooltipRef} className=" hidden absolute pointer-events-none w-28 border-gray-700 dark:bg-chartCardHeader border-2 h-16 p-2 text-sm bg-gray-100 rounded-2xl"></div>
+                            <div ref={svgRef}></div>
+                        </div>
+                    </div>
+            }
         </ChartCard>)
 }

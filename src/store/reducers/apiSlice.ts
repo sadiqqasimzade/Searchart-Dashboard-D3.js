@@ -3,61 +3,70 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { AvangeScore, CountryAverageScore, CountryDiagram, CountryInfo, CountryRankDifference, CountryScoreDifference, CountryScoreYear, SectorRankDifference, UniqueCountries, UniqueIndicators, UniqueSectors, UniqueSubsectors, UniqueYears, YearScore } from '../types/apiResonseTypes'
 
 
+function checkObjectFieldsNotNull<T>(obj: { [key: string]: T | null | undefined }): void {
+    const missingFields: string[] = [];
+
+    for (const key in obj) {
+        // eslint-disable-next-line no-prototype-builtins
+        if (obj.hasOwnProperty(key) && obj[key] === null) {
+            missingFields.push(key);
+        }
+    }
+
+    if (missingFields.length > 0) {
+        const missingFilters = missingFields.join(', ');
+        throw new Error(`Filters ${missingFilters} missing`); 
+    }
+
+}
+
 // Define our single API slice object
 export const apiSlice = createApi({
     reducerPath: 'api',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'http://192.168.8.151:8000/api/',
+        baseUrl: 'http://192.168.8.194:8000/api/',
     }),
 
     endpoints: builder => ({
 
         fetchCountryIndexDifference: builder.query<CountryRankDifference, { country: string | null, year1: string | null, year2: string | null, sector: string | null, subsector: string | null }>({
-            query: ({ country, sector, subsector, year1, year2 }) => {
-                if (sector === null || country === null || subsector === null || year1 === null || year2 === null) {
-                    throw new Error('Error');
-                }
+            query: (e) => {
+                checkObjectFieldsNotNull(e)
                 return {
-                    url: `country-rank-difference/?country=${country}&year1=${year1}&year2=${year2}&sector=${sector}&subsector=${subsector}`
+                    url: `country-rank-difference/?country=${e.country}&year1=${e.year1}&year2=${e.year2}&sector=${e.sector}&subsector=${e.subsector}`
                 };
             }
         }),
-        fetchCountryDiagram: builder.query<CountryDiagram, { country: string | null, sector: string | null, subsector: string | null, indicator: string | null }>({
-            query: ({ country, sector, subsector, indicator }) => {
-                if (country === null || sector === null || subsector === null || indicator === null) {
-                    throw new Error('Error');
-                }
+        fetchCountryDiagram: builder.query<CountryDiagram, { country: string | null, sector: string | null, subsector: string | null}>({
+            query: (e) => {
+                checkObjectFieldsNotNull(e)
                 return {
-                    url: `country-diagram/?country=${country}&sector=${sector}&subsector=${subsector}&indicator=${indicator}`
+                    url: `country-diagram/?country=${e.country}&sector=${e.sector}&subsector=${e.subsector}`
                 };
             }
         }),
         fetchCountryInfo: builder.query<CountryInfo, { year: string | null, country: string | null, sector: string | null, subsector: string | null }>({
-            query: ({ year, country, sector, subsector }) => {
-                if (year === null || country === null || sector === null || subsector === null) {
-                    throw new Error('Error');
-                }
+            query: (e) => {
+                checkObjectFieldsNotNull(e)
                 return {
-                    url: `country-info/?year=${year}&country=${country}&sector=${sector}&subsector=${subsector}`
+                    url: `country-info/?year=${e.year}&country=${e.country}&sector=${e.sector}&subsector=${e.subsector}`
                 };
             }
         }),
         fetchUniqueSubsectors: builder.query<UniqueSubsectors, { sector: string | null }>({
-            query: ({ sector }) => {
-                if (sector === null) {
-                    throw new Error('Error');
-                }
+            query: (e) => {
+                checkObjectFieldsNotNull(e)
                 return {
-                    url: `subsectors/?sector=${sector}`,
+                    url: `subsectors/?sector=${e.sector}`,
                 };
             }
         }),
 
         fetchUniqueSectors: builder.query<UniqueSectors, void>({
-            query: (e) => ({ url: 'sectors/' })
+            query: (e) => ({ url: 'sectors/' }),
         }),
         fetchUniqueCountries: builder.query<UniqueCountries, void>({
-            query: (e) => ({ url: 'unique-country/' })
+            query: (e) => ({ url: 'unique-country/' }),
         }),
         fetchUniqueYears: builder.query<string[], void>({
             query: (e) => ({ url: 'min-max-years/' }),
@@ -73,72 +82,65 @@ export const apiSlice = createApi({
             }
         }),
         fetchUniqueIndicators: builder.query<UniqueIndicators, { subsector: string | null }>({
-            query: ({ subsector }) => {
-                if (subsector === null) {
-                    throw new Error('Error');
-                }
+            query: (e) => {
+                checkObjectFieldsNotNull(e)
+
                 return {
-                    url: `indicators/?subsector=${subsector}`
+                    url: `indicators/?subsector=${e.subsector}`
                 };
             }
         }),
         fetchCountryScoreYear: builder.query<CountryScoreYear, { country: string | null }>({
-            query: ({ country }) => {
-                if (country === null) {
-                    throw new Error('Error');
-                }
+            query: (e) => {
+                checkObjectFieldsNotNull(e)
+
                 return {
-                    url: `country-score-year/?country=${country}`
+                    url: `country-score-year/?country=${e.country}`
                 };
             }
         }),
         fetchCountryAverageScore: builder.query<CountryAverageScore, { country: string | null, year: string | null }>({
-            query: ({ country, year }) => {
-                if (country === null || year === null) {
-                    throw new Error('Error');
-                }
+            query: (e) => {
+                checkObjectFieldsNotNull(e);
+
                 return {
-                    url: `sector-average-score/?country=${country}&year=${year}`
+                    url: `sector-average-score/?country=${e.country}&year=${e.year}`
                 };
             }
         }),
         fetchYearScore: builder.query<YearScore, { country: string | null, sector: string | null }>({
-            query: ({ country, sector }) => {
-                if (country === null || sector === null) {
-                    throw new Error('Error');
-                }
+            query: (e) => {
+                checkObjectFieldsNotNull(e)
+
                 return {
-                    url: `year-score/?country=${country}&sector=${sector}`
+                    url: `year-score/?country=${e.country}&sector=${e.sector}`
                 };
             }
         }),
         fetchSectorRankDifference: builder.query<SectorRankDifference, { year1: string | null, year2: string | null, country: string | null }>({
-            query: ({ year1, year2, country }) => {
-                if (year1 === null || year2 === null || country === null) {
-                    throw new Error('Error');
-                }
+            query: (e) => {
+                checkObjectFieldsNotNull(e)
+             
                 return {
-                    url: `sector-rank-difference/?year1=${year1}&year2=${year2}&country=${country}`
+                    url: `sector-rank-difference/?year1=${e.year1}&year2=${e.year2}&country=${e.country}`
                 };
             }
         }),
         fetchAvarangeScore: builder.query<AvangeScore, { country: string | null, year: string | null }>({
-            query: ({ country, year }) => {
-                if (country === null || year === null) {
-                    throw new Error('Error');
-                }
+            query: (e) => {
+                checkObjectFieldsNotNull(e)
+
                 return {
-                    url: `average-score/?country=${country}&year=${year}`
+                    url: `average-score/?country=${e.country}&year=${e.year}`
                 };
             }
         }),
         fetchCountryScoreDifference: builder.query<CountryScoreDifference, { country: string | null, year1: string | null, year2: string | null }>({
-            query: ({ country, year1, year2 }) => {
-                if (country === null || year1 === null || year2 === null) {
-                    throw new Error('Error');
-                }
+            query: (e) => {
+                checkObjectFieldsNotNull(e)
+
                 return {
-                    url: `country-score-difference/?country=${country}&year1=${year1}&year2=${year2}`
+                    url: `country-score-difference/?country=${e.country}&year1=${e.year1}&year2=${e.year2}`
                 };
             }
         }),

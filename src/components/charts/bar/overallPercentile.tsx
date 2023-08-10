@@ -2,6 +2,7 @@ import { useFetchCountryAverageScoreQuery } from "src/store/reducers/apiSlice"
 import ChartCard from "../chartCard"
 import { getCountry, getFlag, getYear } from "src/store/selectors/appSelectors"
 import { useSelector } from "react-redux"
+import { SerializedError } from "@reduxjs/toolkit"
 type Props = {
     text_color: string
 }
@@ -10,18 +11,16 @@ export default function OverallPercentile({ text_color }: Props) {
     const year = useSelector(getYear)
     const flag = useSelector(getFlag)
     const { data, isLoading, error } = useFetchCountryAverageScoreQuery({ country, year })
-
     return (
         <ChartCard title="Overall Percentile" text_color={text_color}>
-            {(!year || !country) ?
-                <p>Please select a country and year</p> :
+            {
                 isLoading ? <p>Loading</p> :
-                    error ? <p>Error</p> :
+                    error ? <p>{(error as SerializedError).message}</p> :
                         data &&
-                        <div className="w-full h-full flex justify-center items-center flex-col">
+                        <div className="w-full h-full flex justify-center items-center flex-col overflow-hidden">
                             <div className="flex items-center justify-between gap-5">
                                 <p>{data.country}</p>
-                                <img src={flag} className="h-5 w-8" alt="country flag" />
+                                <img src={flag as string} className="h-5 w-8" alt="country flag" />
                             </div>
                             <div className="progress">
                                 <div className="barOverflow">
