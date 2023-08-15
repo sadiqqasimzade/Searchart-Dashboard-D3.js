@@ -60,4 +60,3 @@ export type AvangeScore = {
     sector: string
     average_score: number;
 }[]
-//sectors?indicators?

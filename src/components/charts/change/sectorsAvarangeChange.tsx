@@ -24,7 +24,7 @@ export default function SectorsAvarangeChange({ text_color }: Props) {
                             <div className="flex justify-between py-1 px-2">
                                 <p>{d[0]}</p>
                                 <div className="flex justify-end gap-1">
-                                    <p className={`${d[1] > 0 ? "text-green-500" : d[1] < 0 ? "text-red-500" : "text-gray-500"} text-sm font-semibold `}>{d[1y]}</p>
+                                    <p className={`${d[1] > 0 ? "text-green-500" : d[1] < 0 ? "text-red-500" : "text-gray-500"} text-sm font-semibold `}>{d[1]}</p>
                                     {d[1] > 0 ? <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="green" className="w-6 h-6">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" />
                                     </svg>

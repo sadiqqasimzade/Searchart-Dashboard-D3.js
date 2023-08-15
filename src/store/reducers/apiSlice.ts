@@ -1,4 +1,3 @@
-// Import the RTK Query methods from the React-specific entry point
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { AvangeScore, CountryAverageScore, CountryDiagram, CountryInfo, CountryRankDifference, CountryScoreDifference, CountryScoreYear, SectorRankDifference, UniqueCountries, UniqueIndicators, UniqueSectors, UniqueSubsectors, UniqueYears, YearScore } from '../types/apiResonseTypes'
 
@@ -20,11 +19,10 @@ function checkObjectFieldsNotNull<T>(obj: { [key: string]: T | null | undefined 
 
 }
 
-// Define our single API slice object
 export const apiSlice = createApi({
     reducerPath: 'api',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'http://192.168.8.194:8000/api/',
+        baseUrl: 'http://192.168.8.126:8000/api/',
     }),
 
     endpoints: builder => ({
@@ -147,6 +145,5 @@ export const apiSlice = createApi({
     })
 })
 
-// Export the auto-generated hook for the  query endpoint
 export const { useFetchCountryScoreDifferenceQuery, useFetchCountryAverageScoreQuery, useFetchCountryDiagramQuery, useFetchCountryIndexDifferenceQuery, useFetchCountryInfoQuery, useFetchCountryScoreYearQuery, useFetchSectorRankDifferenceQuery, useFetchUniqueCountriesQuery, useFetchUniqueSectorsQuery, useFetchUniqueYearsQuery, useFetchUniqueSubsectorsQuery, useFetchYearScoreQuery, useFetchUniqueIndicatorsQuery, useFetchAvarangeScoreQuery } = apiSlice
 

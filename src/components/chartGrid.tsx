@@ -84,9 +84,8 @@ export default function ChartGrid() {
                         <p className="font-bold">Country</p>
                         <Select
                             className=""
-                            defaultValue={{ value: country, label: country }}
+                            defaultValue={{ value: 'country', label: 'country' }}
                             isSearchable
-                            name="color"
                             options={countries?.map(c => { return { value: c, label: c } }) as []}
                             onChange={e => dispatch(changeCountry(e.value))}
                             classNamePrefix={'react-select'}
