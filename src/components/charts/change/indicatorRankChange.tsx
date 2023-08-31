@@ -14,7 +14,6 @@ export default function IndicatorRankChange({ text_color }: Props) {
     const subsector = useSelector(getSubsector)
 
     const { data, isLoading, error } = useFetchCountryIndexDifferenceQuery({ country, sector, subsector, year1: years[0], year2: years[1] })
-    console.log(data)
     return (
         <ChartCard title={`${subsector ? subsector : "Subsector"}'s Indicators Score Change`} text_color={text_color}>
             {isLoading ? <p>Loading</p> :

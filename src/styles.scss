@@ -28,23 +28,25 @@ html {
         border-radius: 100vh;
     }
 
-    @media (prefers-color-scheme: dark) {
-        *::-webkit-scrollbar {
-            width: 10px;
-            height: 10px;
-        }
 
-        *::-webkit-scrollbar-track {
-            background: transparent;
-            border: 5px #2C3645 solid;
-            border-radius: 100vh;
+}
 
-        }
+html.dark {
+    *::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
 
-        *::-webkit-scrollbar-thumb {
-            background: #4A628A;
-            border-radius: 100vh;
-        }
+    *::-webkit-scrollbar-track {
+        background: transparent;
+        border: 5px #2C3645 solid;
+        border-radius: 100vh;
+
+    }
+
+    *::-webkit-scrollbar-thumb {
+        background: #4A628A;
+        border-radius: 100vh;
     }
 }
 
@@ -83,6 +85,13 @@ html {
     margin-bottom: -14px;
 }
 
+
+html.dark {
+    .bar-overall {
+        border: 20px solid #293343;
+    }
+}
+
 .bar-overall {
     position: absolute;
     top: 0;
@@ -92,10 +101,6 @@ html {
     border-radius: 50%;
     box-sizing: border-box;
     border: 20px solid #eee;
-
-    @media (prefers-color-scheme: dark) {
-        border: 20px solid #293343;
-    }
 }
 
 
@@ -103,48 +108,54 @@ html {
     &__control {
         border-radius: 0.5rem !important;
     }
+}
 
-    @media (prefers-color-scheme: dark) {
-        &__control {
-            background-color: #293F64 !important;
-        }
+html.dark {
+    .react-select {
 
-        &__menu {
-            background-color: #293F64 !important;
+        @media (prefers-color-scheme: dark) {
+            &__control {
+                background-color: #293F64 !important;
+            }
 
-        }
-
-        &__input {
-            color: #A7B4CA !important;
-
-            &::placeholder {
-                color: #A7B4CA !important;
+            &__menu {
+                background-color: #293F64 !important;
 
             }
-        }
 
-        &__single-value {
-            color: #A7B4CA !important;
+            &__input {
+                color: #A7B4CA !important;
+
+                &::placeholder {
+                    color: #A7B4CA !important;
+
+                }
+            }
+
+            &__single-value {
+                color: #A7B4CA !important;
+            }
         }
     }
 }
 
-.table-container{
-    *:first-child{
-        p{
+.table-container {
+    *:first-child {
+        p {
             border-top-left-radius: 10px;
             border-bottom-left-radius: 10px;
         }
     }
-    :last-child{
-        p{
+
+    :last-child {
+        p {
             border-bottom-right-radius: 10px;
             border-top-right-radius: 10px;
         }
     }
 }
 
-.left-border{
+.left-border {
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
 }
