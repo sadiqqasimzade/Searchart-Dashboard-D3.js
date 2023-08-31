@@ -17,7 +17,7 @@ export default function Table({ data, x_key, x_title, y_key, y_title, indexes }:
                     <div className="text-sm ">
                         <div className="flex flex-col">
                             {data.map((col,i) =>
-                                <div className="uppercase flex flex-row table-container">
+                                <div key={i} className="uppercase flex flex-row table-container">
                                     {col.map((d, i) =>
                                         i % 5 === 0 &&
                                         <div className="text-left tracking-wider flex flex-col" key={i}>

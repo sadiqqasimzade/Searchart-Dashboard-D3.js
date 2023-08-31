@@ -1,8 +1,8 @@
-import { useFetchAvarangeScoreQuery } from "src/store/reducers/apiSlice";
 import ChartCard from "../chartCard";
 import { useSelector } from "react-redux";
-import { getCountry, getTableMode, getYear } from "src/store/selectors/appSelectors";
 import { SerializedError } from "@reduxjs/toolkit";
+import { useFetchAvarangeScoreQuery } from "../../../store/reducers/apiSlice";
+import { getCountry, getYear, getTableMode } from "../../../store/selectors/appSelectors";
 
 type Props = {
     text_color: string

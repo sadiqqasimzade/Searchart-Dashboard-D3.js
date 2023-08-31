@@ -8,14 +8,14 @@ import IndicatorRankChange from './charts/change/indicatorRankChange';
 import IndicatorPercentiles from './charts/bar/indicatorPercentiles';
 import IndicatorPercentilesByYear from './charts/lineChart/indicatorPercentilesByYear';
 import Filter from './inputs/filter';
-import { useFetchUniqueCountriesQuery, useFetchUniqueIndicatorsQuery, useFetchUniqueSectorsQuery, useFetchUniqueSubsectorsQuery, useFetchUniqueYearsQuery } from "src/store/reducers/apiSlice";
+import { useFetchUniqueCountriesQuery, useFetchUniqueIndicatorsQuery, useFetchUniqueSectorsQuery, useFetchUniqueSubsectorsQuery, useFetchUniqueYearsQuery } from "../store/reducers/apiSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { getCompareYears, getCountry, getIndicator, getSector, getSubsector, getTableMode, getYear } from "src/store/selectors/appSelectors";
-import { changeComapreYears1, changeComapreYears2, changeCountry, changeFlag, changeIndicator, changeSector, changeSubsector, changeTableMode, changeYear } from "src/store/reducers/appSlice";
 import { useEffect } from "react";
 import Select from 'react-select';
-import { colors } from "src/utils/constans";
 import makeAnimated from 'react-select/animated';
+import { getSubsector, getSector, getCountry, getCompareYears, getIndicator, getYear, getTableMode } from "../store/selectors/appSelectors";
+import { colors } from "../utils/constans";
+import { changeSubsector, changeIndicator, changeFlag, changeTableMode, changeCountry, changeYear, changeSector, changeComapreYears1, changeComapreYears2 } from "../store/reducers/appSlice";
 
 const animatedComponents = makeAnimated();
 
@@ -37,16 +37,16 @@ export default function ChartGrid() {
     const { data: indicators } = useFetchUniqueIndicatorsQuery({ subsector })
 
 
-    useEffect(()=>{
-        if(subsectors){
+    useEffect(() => {
+        if (subsectors) {
             dispatch(changeSubsector(subsectors[0]))
         }
-    },[subsectors])
-    useEffect(()=>{
-        if(indicators){
+    }, [subsectors])
+    useEffect(() => {
+        if (indicators) {
             dispatch(changeIndicator([indicators[0]]))
         }
-    },[indicators])
+    }, [indicators])
 
     useEffect(() => {
         if (country) {
@@ -77,14 +77,14 @@ export default function ChartGrid() {
                     </svg>
                 </button>
             </div>
-            <div className="grid grid-flow-row gap-4 custom-grid-cols-4  mt-5">
+            <div className="grid grid-flow-row gap-4 custom-grid-cols-4 mt-5">
                 <p></p>
                 <div className='flex gap-5'>
                     <div className="flex flex-col">
                         <p className="font-bold">Country</p>
                         <Select
                             className=""
-                            defaultValue={{ value: 'country', label: 'country' }}
+                            defaultValue={{ value: country, label: country }}
                             isSearchable
                             options={countries?.map(c => { return { value: c, label: c } }) as []}
                             onChange={e => dispatch(changeCountry(e.value))}
@@ -165,8 +165,8 @@ export default function ChartGrid() {
                                     color: 'white',
                                 },
                             }),
-                            indicatorsContainer: (styles) => ({ ...styles, display: 'flex',alignItems:'start' }),
-                            
+                            indicatorsContainer: (styles) => ({ ...styles, display: 'flex', alignItems: 'start' }),
+
                         }}
                     />
 

@@ -1,11 +1,11 @@
 import * as d3 from "d3"
-import { useFetchCountryScoreYearQuery } from "src/store/reducers/apiSlice"
 import ChartCard from "../chartCard"
-import { getCountry, getTableMode } from "src/store/selectors/appSelectors"
 import { useSelector } from "react-redux"
 import { useEffect, useRef } from "react"
 import Table from "../table"
 import { SerializedError } from "@reduxjs/toolkit"
+import { useFetchCountryScoreYearQuery } from "../../../store/reducers/apiSlice"
+import { getCountry, getTableMode } from "../../../store/selectors/appSelectors"
 
 type Props = {
     text_color: string

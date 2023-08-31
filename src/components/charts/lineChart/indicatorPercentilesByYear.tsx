@@ -1,14 +1,13 @@
 import { useSelector } from "react-redux";
-import { useFetchCountryDiagramQuery } from "src/store/reducers/apiSlice";
-import { getCountry, getSector, getSubsector, getIndicator, getTableMode } from "src/store/selectors/appSelectors";
 import ChartCard from "../chartCard";
 import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
-import Table from "../table";
 import { SerializedError } from "@reduxjs/toolkit";
-import { CountryDiagram } from "src/store/types/apiResonseTypes";
-import { colors } from "src/utils/constans";
 import AnotherTable from "../anotherTable";
+import { colors } from "../../../utils/constans";
+import { useFetchCountryDiagramQuery } from "../../../store/reducers/apiSlice";
+import { getCountry, getSector, getSubsector, getIndicator, getTableMode } from "../../../store/selectors/appSelectors";
+import { CountryDiagram } from "../../../store/types/apiResonseTypes";
 
 type Props = {
     text_color: string
@@ -133,7 +132,7 @@ export default function IndicatorPercentilesByYear({ text_color }: Props) {
                             <AnotherTable data={filtered.map(d => d.data)} indexes={filtered.map(d => d.indicator)} x_key="year" y_key="score" x_title="Year" y_title="Socre" />
                         </div>
 
-                        <div className={`${tableMode ? 'hidden' : 'block'} `}>
+                        <div className={`${tableMode ? 'hidden' : 'block '} `}>
                             <div ref={tooltipRef} className="hidden absolute pointer-events-none w-28 border-gray-700 dark:bg-chartCardHeader border-2 h-16 p-2 text-sm bg-gray-100 rounded-2xl"></div>
                             <div ref={svgRef}></div>
                         </div>

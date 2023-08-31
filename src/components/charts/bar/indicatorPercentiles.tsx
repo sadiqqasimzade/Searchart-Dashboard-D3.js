@@ -1,8 +1,8 @@
 import { useSelector } from 'react-redux';
-import { getCountry, getSector, getSubsector, getTableMode, getYear } from 'src/store/selectors/appSelectors';
 import ChartCard from '../chartCard';
-import { useFetchCountryInfoQuery } from 'src/store/reducers/apiSlice';
 import { SerializedError } from '@reduxjs/toolkit';
+import { useFetchCountryInfoQuery } from '../../../store/reducers/apiSlice';
+import { getCountry, getYear, getSector, getSubsector, getTableMode } from '../../../store/selectors/appSelectors';
 
 type Props = {
     text_color: string

@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import ChartGrid from 'src/components/chartGrid';
+import ChartGrid from '../components/chartGrid';
 import { Provider } from 'react-redux';
-import store from 'src/store/reducers/rootReducer';
+import store from '../store/reducers/rootReducer';
 export function App() {
   return (
     <Provider store={store}>

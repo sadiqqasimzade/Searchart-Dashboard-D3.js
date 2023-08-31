@@ -1,8 +1,8 @@
-import { useFetchCountryScoreDifferenceQuery } from "src/store/reducers/apiSlice";
 import ChartCard from "../chartCard";
 import { useSelector } from "react-redux";
-import { getCompareYears, getCountry, getFlag } from "src/store/selectors/appSelectors";
 import { SerializedError } from "@reduxjs/toolkit";
+import { getCompareYears, getCountry, getFlag } from "../../../store/selectors/appSelectors";
+import { useFetchCountryScoreDifferenceQuery } from "../../../store/reducers/apiSlice";
 
 type Props = {
     text_color: string

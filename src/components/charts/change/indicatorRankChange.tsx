@@ -1,8 +1,8 @@
-import { useFetchCountryIndexDifferenceQuery } from "src/store/reducers/apiSlice";
 import ChartCard from "../chartCard";
 import { useSelector } from "react-redux";
-import { getCountry, getSector, getSubsector, getCompareYears } from "src/store/selectors/appSelectors";
 import { SerializedError } from "@reduxjs/toolkit";
+import { useFetchCountryIndexDifferenceQuery } from "../../../store/reducers/apiSlice";
+import { getCountry, getCompareYears, getSector, getSubsector } from "../../../store/selectors/appSelectors";
 
 type Props = {
     text_color: string
@@ -14,6 +14,7 @@ export default function IndicatorRankChange({ text_color }: Props) {
     const subsector = useSelector(getSubsector)
 
     const { data, isLoading, error } = useFetchCountryIndexDifferenceQuery({ country, sector, subsector, year1: years[0], year2: years[1] })
+    console.log(data)
     return (
         <ChartCard title={`${subsector ? subsector : "Subsector"}'s Indicators Score Change`} text_color={text_color}>
             {isLoading ? <p>Loading</p> :

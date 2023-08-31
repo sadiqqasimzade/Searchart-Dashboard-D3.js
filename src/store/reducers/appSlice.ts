@@ -13,8 +13,8 @@ const initialState: AppState = {
     compareYears: ['2010', '2020'],
     country: 'Azerbaijan',
     indicator: ['Population ages 0-14 percent of total'],
-    sector: "Index",
-    subsector: 'Demographics',
+    sector: "Economy",
+    subsector: '',
     year: '2020',
     flag: null,
     tableMode: false

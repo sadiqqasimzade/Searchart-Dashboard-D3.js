@@ -1,8 +1,8 @@
-import { useFetchCountryAverageScoreQuery } from "src/store/reducers/apiSlice"
 import ChartCard from "../chartCard"
-import { getCountry, getFlag, getYear } from "src/store/selectors/appSelectors"
 import { useSelector } from "react-redux"
 import { SerializedError } from "@reduxjs/toolkit"
+import { useFetchCountryAverageScoreQuery } from "../../../store/reducers/apiSlice"
+import { getCountry, getYear, getFlag } from "../../../store/selectors/appSelectors"
 type Props = {
     text_color: string
 }

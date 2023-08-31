@@ -22,7 +22,7 @@ function checkObjectFieldsNotNull<T>(obj: { [key: string]: T | null | undefined 
 export const apiSlice = createApi({
     reducerPath: 'api',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'http://192.168.8.126:8000/api/',
+        baseUrl: 'https://searchartapp.pythonanywhere.com/api/',
     }),
 
     endpoints: builder => ({
