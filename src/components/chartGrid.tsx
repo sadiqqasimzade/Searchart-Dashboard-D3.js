@@ -180,14 +180,13 @@ export default function ChartGrid() {
                         defaultValue={indicator.length > 0 ? indicator : null}
                         value={indicator.map((c, i) => { return { value: c, label: c, color: colors[i] } })}
                         isMulti
-                        options={indicators?.map((c, i) => { return { value: c, label: c, color: 'white' } }) as []}
+                        options={indicators?.map((c, i) => { return { value: c, label: c, color: colors[i] } }) as []}
                         onChange={e => {
                             dispatch(changeIndicator(e.map(c => c.value)))
                         }}
                         components={animatedComponents}
                         classNamePrefix={'react-select'}
                         styles={{
-                            control: (styles) => ({ ...styles, backgroundColor: 'white', overflow: "auto", height: '20px' }),
                             option: (styles, { data, isDisabled, isFocused, isSelected }) => {
                                 return {
                                     ...styles,
@@ -209,13 +208,7 @@ export default function ChartGrid() {
                                 color: data.color,
 
                             }),
-                            multiValueRemove: (styles, { data }) => ({
-                                ...styles,
-                                ':hover': {
-                                    backgroundColor: 'red',
-                                    color: 'white',
-                                },
-                            }),
+
                             indicatorsContainer: (styles) => ({ ...styles, display: 'flex', alignItems: 'start' }),
 
                         }}
