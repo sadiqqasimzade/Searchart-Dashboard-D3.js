@@ -34,7 +34,7 @@ export default function AnotherTable({ data, x_key, x_title, y_key, y_title, ind
                                     {data.map((rows, i) =>
                                         <div className="uppercase flex flex-row table-container " key={i}>
                                             <div className={`text-left tracking-wider flex flex-row ${i % 2 !== 0 && 'dark:bg-chartCardHeader'} `}>
-                                                <p className="p-1 w-40 text-xs truncate ...  text-left" title={indexes[i]} >{indexes[i]}</p>
+                                                <p className="p-1 w-40 text-xs truncate ...  text-left" title={indexes![i]} >{indexes![i]}</p>
 
                                                 {years.map((year, i) => i % 5 === 0 && (
                                                     rows.find(r => r[x_key] === year) ?

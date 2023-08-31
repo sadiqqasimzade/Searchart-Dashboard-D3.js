@@ -66,7 +66,7 @@ export default function ChartGrid() {
 
         // Listen for changes in user preference
         const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-        const handleChange = (event) => {
+        const handleChange = (event:any) => {
             setIsDarkMode(event.matches);
         };
         mediaQuery.addEventListener('change', handleChange);
@@ -127,7 +127,7 @@ export default function ChartGrid() {
                             defaultValue={{ value: country, label: country }}
                             isSearchable
                             options={countries?.map(c => { return { value: c, label: c } }) as []}
-                            onChange={e => dispatch(changeCountry(e.value))}
+                            onChange={e => dispatch(changeCountry(e!.value!))}
                             classNamePrefix={'react-select'}
                             styles={{
                                 option: (styles) => {
@@ -182,7 +182,7 @@ export default function ChartGrid() {
                         isMulti
                         options={indicators?.map((c, i) => { return { value: c, label: c, color: colors[i] } }) as []}
                         onChange={e => {
-                            dispatch(changeIndicator(e.map(c => c.value)))
+                            dispatch(changeIndicator(e.map((c:any) => c.value as string)))
                         }}
                         components={animatedComponents}
                         classNamePrefix={'react-select'}
@@ -194,7 +194,7 @@ export default function ChartGrid() {
                                     ":hover": {
                                         backgroundColor: 'blue'
                                     },
-                                    color: data.color,
+                                    color: (data as {color:string}).color,
                                 };
                             },
                             multiValue: (styles, { data }) => {
@@ -205,7 +205,7 @@ export default function ChartGrid() {
                             },
                             multiValueLabel: (styles, { data }) => ({
                                 ...styles,
-                                color: data.color,
+                                color: (data as {color:string}).color,
 
                             }),
 

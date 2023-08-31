@@ -10,7 +10,7 @@ type AppState = {
     tableMode: boolean
 }
 const initialState: AppState = {
-    compareYears: ['2010', '2020'],
+    compareYears: ['2016', '2019'],
     country: 'Azerbaijan',
     indicator: [],
     sector: "Economy",
